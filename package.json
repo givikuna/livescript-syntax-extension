@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "cli-color": "^2.0.3",
+    "fs": "^0.0.1-security",
+    "prelude-ls": "^1.2.1",
+    "readline-sync": "^1.4.10"
+  }
+}
