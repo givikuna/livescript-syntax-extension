@@ -15,11 +15,9 @@ len = -> it.length
 
 print = console.log
 
-is-not-blank = ->
-    if it not in ['', "", null, undefined, [], {}] then return true
-    false
+is-not-blank = -> if it not in ["", null, undefined, [], {}] then return true; false
 
-is-blank = -> if is-not-blank then return false else then return true
+is-blank = -> if is-not-blank then return false; true
 
 is-numeric = -> /^[-+]?\d+(\.\d+)?$/.test it
 
@@ -36,9 +34,9 @@ bool-string = -> if it in <[ true false on off yes no ]> then return true; false
 
 input = (prompt, change-to) ->
     answer = prompt |> readline-sync.question
-    if change-to in ['num', 'n', 'number', 'int']
+    if change-to in <[num n number int]>
         if is-numeric answer then answer = int answer
-    if change-to in ['bool', 'boolean', 'b']
+    if change-to in <[bool boolean b]>
         if answer |> bool-string then answer = bool answer
     answer
 
@@ -48,9 +46,9 @@ read-dir = fs.readdirSync
 
 is-file = -> fs.existsSync ... and fs.statSync ... .isFile();
 
-exists = fs.existsSync
+is-dir = -> fs.existsSync ... and fs.statSync ... .isDirectory();
 
-is-dir = -> if exists ... and fs.statSync ... .isDirectory! then return true else then return false
+exists = fs.existsSync
 
 read-directories = ->
     dir-data = do ->
@@ -85,3 +83,5 @@ module.exports =
     bool: bool
     str: str
     int: int
+    is-numeric: is-numeric
+    bool-string: bool-string
