@@ -30,6 +30,6 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/givikuna/livescript-syntax-extension.git"
+    "url": "git+https://github.com/givikuna/livescript-syntax-extension.git"
   }
 }
