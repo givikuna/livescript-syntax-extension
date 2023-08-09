@@ -2,7 +2,11 @@
   "dependencies": {
     "cli-color": "^2.0.3",
     "fs": "^0.0.1-security",
+    "livescript": "^1.6.0",
     "prelude-ls": "^1.2.1",
     "readline-sync": "^1.4.10"
+  },
+  "scripts": {
+    "test": "lsc test"
   }
 }
