@@ -32,7 +32,8 @@ const path = require 'path'
 
 (has-matching-values-with = have-matching-values)
 
-(does-not-have-matching-values-with = (arr1, arr2) -> (not (arr1 `has-matching-values-with` arr2)))
+(does-not-have-matching-values-with = (arr1, arr2) ->
+    (not (arr1 `has-matching-values-with` arr2)))
 
 (occurs = ->
     (count-occurances(...) `is-more-than` 0))
@@ -85,29 +86,37 @@ const path = require 'path'
 
 (const NOTHING = nothing)
 
-(more-than = (el1, el2) -> (el1 > el2))
+(more-than = (el1, el2) ->
+    (el1 > el2))
 
-(less-than = (el1, el2) -> (el1 < el2))
+(less-than = (el1, el2) ->
+    (el1 < el2))
 
 (is-more-than = more-than)
 
 (is-less-than = less-than)
 
-(no-more-than = (a, b) -> (a < b or a is b))
+(no-more-than = (a, b) ->
+    (a < b or a is b))
 
-(no-less-than = (a, b) -> (a > b or a is b))
+(no-less-than = (a, b) ->
+    (a > b or a is b))
 
 (is-no-more-than = no-more-than)
 
 (is-no-less-than = no-less-than)
 
-(supertrim = -> (it.replace /\r?\n|\r/g '' .trim!))
+(supertrim = -> 
+    (it.replace /\r?\n|\r/g '' .trim!))
 
 (string-to-number = ->
-    (if typeof it isnt \string then return 0)
+    (if typeof it isnt \string
+        (return 0))
     (it = supertrim it)
-    (if /^\d+[a-zA-Z]*$/.test it is false then return 0)
-    (if count-occurances \- it > 0 and not it.starts-with \- then return 0)
+    (if /^\d+[a-zA-Z]*$/.test it is false
+        (return 0))
+    (if count-occurances \- it > 0 and not it.starts-with \-
+        (return 0))
     ( style = \pythonic )
     (if (count-occurances \. it) > 1 and (count-occurances \, it) < 2 and (count-occurances \_ it) is 0
         ( style = \european )
@@ -161,15 +170,21 @@ const path = require 'path'
         (false))
     (false))
 
-(is-array = -> Array.is-array it or isJSON it or it instanceof Array or it instanceof JSON)
+(is-array = ->
+    (Array.is-array it or isJSON it or it instanceof Array or it instanceof JSON))
 
 (equals = (val1, val2) ->
     (try
-        (if val1 is val2 then return yes)
-        (if val1 `deep-equals` val2 then return yes)
-        (if typeof val1 isnt typeof val2 then return no)
-        (if Array.is-array val1 isnt Array.is-array val2 then return no)
-        (if len Object.keys val1 isnt len Object.keys val2 then return no)
+        (if val1 is val2
+            (return yes))
+        (if val1 `deep-equals` val2
+            (return yes))
+        (if typeof val1 isnt typeof val2
+            (return no))
+        (if Array.is-array val1 isnt Array.is-array val2
+            (return no))
+        (if len Object.keys val1 isnt len Object.keys val2
+            (return no))
 
         (if Array.is-array val1 and Array.is-array val2
             (i = 0)
@@ -184,17 +199,20 @@ const path = require 'path'
         (no)))
 
 (equals-any = (key, arr) ->
-    (if key in arr then return yes)
+    (if key in arr
+        (return yes))
     (for el in flatten arr
         (if key `equals` el
             (return yes)))
     (no))
 
 (is-not-blank = ->
-    (if it `equals-any` [null, undefined, "", {}, []] or empty it then return yes)
+    (if it `equals-any` [null, undefined, "", {}, []] or empty it
+        (return yes))
     (no))
 
-(is-blank = -> (not is-not-blank it))
+(is-blank = ->
+    (not is-not-blank it))
 
 (bool = ->
     ( if it is \true then return \true )
@@ -227,7 +245,7 @@ const path = require 'path'
 
 # min inclusive, max exclusive
 (random = (min-val, max-val) ->
-    (Math.random! * (min-val - max-val) + min-val))
+    ((+ min-val) Math.random! * (min-val - max-val)))
 
 (scramble-array = ->
     if it not instanceof Array then return []
