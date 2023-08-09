@@ -106,38 +106,37 @@ const path = require 'path'
 
 (is-no-less-than = no-less-than)
 
-(supertrim = -> 
+(supertrim = ->
     (it.replace /\r?\n|\r/g '' .trim!))
 
 (string-to-number = ->
-    (if typeof it isnt \string
+    (if typeof it isnt \string or /^\d+[a-zA-Z]*$/.test it is false or count-occurances \- it > 0 and not it.starts-with \-
         (return 0))
     (it = supertrim it)
-    (if /^\d+[a-zA-Z]*$/.test it is false
-        (return 0))
-    (if count-occurances \- it > 0 and not it.starts-with \-
-        (return 0))
-    ( style = \pythonic )
-    (if (count-occurances \. it) > 1 and (count-occurances \, it) < 2 and (count-occurances \_ it) is 0
-        ( style = \european )
-    else if (count-occurances \, it) > 1 and (count-occurances \. it) < 2 and (count-occurances \_ it) is 0
-        ( style = \american )
-    else
-        (if (count-occurances \, it) > 0 and not occurs \. it
-            ( style = \weird-pythonic )))
 
-    (Number do
-        (((given-style, given-string) ->
-            (return-string = '')
-            (if given-style is \pythonic then do
-                (return-string = given-string.replace /_/g ''))
-            (if given-style is \european then do
-                (return-string = given-string.replace /\./g '' .replace /,/ \. ))
-            (if given-style is \american then do
-                (return-string = given-string.replace /,/g ''))
-            (if given-style is \weird-pythonic then do
-                (return-string = given-string.replace /_/g '' .replace /,/ \. ))
-            (return-string.replace /[A-Za-z]/g '')) style, it)))
+    (style = ((input-string) ->
+        (if (count-occurances \. input-string) > 1 and (count-occurances \, input-string) < 2 and (count-occurances \_ input-string) is 0 then do
+            ( return \european ))
+        (if (count-occurances \, input-string) > 1 and (count-occurances \. input-string) < 2 and (count-occurances \_ input-string ) is 0 then do
+            ( return \american ))
+        (if (count-occurances \, input-string) > 0 and not occurs \. input-string then do
+            ( return \weird-pythonic ))
+        ( \pythonic )) it)
+    (try
+        (Number do
+            (((given-style, given-string) ->
+                (return-string = '')
+                (if given-style is \pythonic then do
+                    (return-string = given-string.replace /_/g ''))
+                (if given-style is \european then do
+                    (return-string = given-string.replace /\./g '' .replace /,/ \. ))
+                (if given-style is \american then do
+                    (return-string = given-string.replace /,/g ''))
+                (if given-style is \weird-pythonic then do
+                    (return-string = given-string.replace /_/g '' .replace /,/ \. ))
+                (return-string.replace /[A-Za-z]/g '')) style, it))
+    catch e
+        (0)))
 
 (int = ->
     (try
@@ -383,7 +382,7 @@ module.exports =
     read-files: read-files
     have-matching-values: have-matching-values
     has-matching-values-with: has-matching-values-with
-    does-not-have-matching-values-with: does-not-have-matching-values-with 
+    does-not-have-matching-values-with: does-not-have-matching-values-with
     count-occurances: count-occurances
     more-than: more-than
     less-than: less-than

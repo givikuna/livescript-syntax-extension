@@ -35,7 +35,7 @@
     int
     isJSON
     is-array
-} = require './lsse')
+} = require './index')
 
 print [1 2 3]length
 print len [1 2 3]
@@ -68,6 +68,9 @@ print string-to-number "3_000_333.2km" #=> 3000333.2
 print string-to-number "3,000,345.46km" #=> 3000345.46
 print string-to-number "3.000.345,46km" #=> 3000345.46
 print string-to-number "3_000_000,3km" #=> 3000000.3
+print string-to-number "3_345" #=> 3345
+print string-to-number "-3,445,349.32" #=> -3445349.32
+
 
 print map (int), ["3_000_333.2km" "3,000,345.46km" "3.000.345,46km" "3_000_000,3km" "12.3" "12." 12.3 35.5]
 #=>
