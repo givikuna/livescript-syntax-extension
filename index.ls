@@ -1,6 +1,8 @@
 const readline-sync = require 'readline-sync'
 const fs = require 'fs'
 const path = require 'path'
+const _ = require 'lodash'
+
 {
     filter
     empty
@@ -347,7 +349,21 @@ const path = require 'path'
         (chunked-arr.push chunk))
     (chunked-arr))
 
+(make-function-name = ->
+    (if it[0] is upper it[0]
+        (return title _.camel-case it))
+    (_.camel-case it))
+
+(defun = (name, fn) ->
+    (global[make-function-name name] = fn))
+
+(lambda = (fn) ->
+    ((...args) ->
+        (fn ...args)))
+
 module.exports =
+    lambda: lambda
+    defun: defun
     len: len
     print: print
     dir: dir

@@ -35,6 +35,8 @@
     int
     isJSON
     is-array
+    defun
+    lambda
 } = require './index')
 
 print [1 2 3]length
@@ -83,3 +85,21 @@ print map (int), ["3_000_333.2km" "3,000,345.46km" "3.000.345,46km" "3_000_000,3
 
 print isJSON({ "hi": "3" }) #=> false (only works to tell you if a string can become a json)
 print is-array([{ "hi": "3" }, 0]) #=> true
+
+(defun \hello-world ->
+    (print 'Hello, World!'))
+
+hello-world!
+
+(defun \Factorial ->
+    (if it is 0 or it is 1
+        (return 1))
+    (it * (it
+        |> (- 1)
+        |> Factorial)))
+
+print Factorial 5
+
+add = lambda (a, b) -> a + b
+
+print 1 `add` 2
