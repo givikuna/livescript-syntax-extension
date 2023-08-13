@@ -397,7 +397,7 @@ const { exec-sync } = require \child_process
     (command |> exec-sync |> str))
 
 module.exports =
-    execute: run-command
+    execute: execute
     get-file-extension: get-file-extension
     echo: echo
     lambda: lambda
