@@ -1,7 +1,9 @@
-const readline-sync = require 'readline-sync'
-const fs = require 'fs'
-const path = require 'path'
-const _ = require 'lodash'
+const readline-sync = require \readline-sync
+const fs = require \fs
+const path = require \path
+const _ = require \lodash
+const { exec-sync } = require \child_process
+
 
 {
     filter
@@ -9,60 +11,65 @@ const _ = require 'lodash'
     floor
     is-it-NaN
     flatten
+    any
 } = require 'prelude-ls'
 
-(dir = ->
+(function dir
     (fs.readdir-sync process.cwd!))
 
-(current-dir = ->
+(function current-dir
     (process.cwd!))
 
-(len = ->
+(function len
     (it.length))
 
-(print = console.log)
+(function print ...data
+    (console.log ...data))
 
-(is-numeric = ->
+(function is-numeric
     (/^[-+]?\d+(\.\d+)?$/.test it))
 
-(have-matching-values = (arr1, arr2) ->
+(function have-matching-values arr1, arr2
     (for el1 in arr1
         (for el2 in arr2
             (if el1 `equals` el2
                 (return yes))))
     (no))
 
-(has-matching-values-with = have-matching-values)
+(function has-matching-values-with ...args
+    (have-matching-values ...args))
 
-(does-not-have-matching-values-with = (arr1, arr2) ->
+(function does-not-have-matching-values-with arr1, arr2
     (not (arr1 `has-matching-values-with` arr2)))
 
-(occurs = ->
-    (count-occurances(...) `is-more-than` 0))
+(function occurs
+    (count-occurrences(...) `is-more-than` 0))
 
-(occurs-in = occurs)
+(function occurs-in
+    (occurs ...))
 
-(count-occurances = (key, item) ->
+(function count-occurrences key, to-search
     (count = 0)
-    (if Array.is-array item
+    (if Array.is-array to-search
         (i = 0)
-        (while i < len item
-            (if not Array.is-array key and Array.is-array item[i] then count += item `count-occurences-of` key)
-            (if item[i] `equals` key then count++)))
-    (if typeof item is \string and typeof key is \string or typeof key is \number or typeof key is \boolean
+        (while i < len to-search
+            (if not Array.is-array key and Array.is-array to-search[i] then count += to-search `count-occurrences-of` key)
+            (if to-search[i] `equals` key then count++)))
+    (if typeof to-search is \string and typeof key is \string or typeof key is \number or typeof key is \boolean
         (key = str key)
-        (count = item.split(key)length - 1))
+        (count = to-search.split(key)length - 1))
     (count))
 
-(count-occurances-in = count-occurances)
+(function count-occurrences-in
+    (count-occurrences ...))
 
-(occurs-more-than = (key, item, count) ->
-    (count-occurances(key, item) > count))
+(function occurs-more-than key, to-search, count
+    (count-occurrences(key, to-search) > count))
 
-(occurs-less-than = (key, item, count) ->
-    (count-occurances(key, item) < count))
+(function occurs-less-than key, to-search, count
+    (count-occurrences(key, to-search) < count))
 
-(lower = ->
+(function lower
     (if typeof it is \string
         (return it.toLowerCase!))
     (if typeof Array.is-array it
@@ -72,7 +79,7 @@ const _ = require 'lodash'
         (return it))
     (it))
 
-(upper = ->
+(function upper
     (if typeof it is \string
         (return it.toUpperCase!))
     (if typeof Array.is-array it
@@ -88,40 +95,42 @@ const _ = require 'lodash'
 
 (const NOTHING = nothing)
 
-(more-than = (el1, el2) ->
+(function more-than el1, el2
     (el1 > el2))
 
-(less-than = (el1, el2) ->
+(function less-than el1, el2
     (el1 < el2))
 
-(is-more-than = more-than)
+(function is-more-than
+    (more-than ...))
 
-(is-less-than = less-than)
+(function is-less-than
+    (less-than ...))
 
-(no-more-than = (a, b) ->
+(function no-more-than a, b
     (a < b or a is b))
 
-(no-less-than = (a, b) ->
+(function no-less-than a, b
     (a > b or a is b))
 
 (is-no-more-than = no-more-than)
 
 (is-no-less-than = no-less-than)
 
-(supertrim = ->
+(function supertrim
     (it.replace /\r?\n|\r/g '' .trim!))
 
-(string-to-number = ->
-    (if typeof it isnt \string or /^\d+[a-zA-Z]*$/.test it is false or count-occurances \- it > 0 and not it.starts-with \-
+(function string-to-number
+    (if typeof it isnt \string or /^\d+[a-zA-Z]*$/.test it is false or count-occurrences \- it > 0 and not it.starts-with \-
         (return 0))
     (it = supertrim it)
 
     (style = ((input-string) ->
-        (if (count-occurances \. input-string) > 1 and (count-occurances \, input-string) < 2 and (count-occurances \_ input-string) is 0 then do
+        (if (count-occurrences \. input-string) > 1 and (count-occurrences \, input-string) < 2 and (count-occurrences \_ input-string) is 0 then do
             ( return \european ))
-        (if (count-occurances \, input-string) > 1 and (count-occurances \. input-string) < 2 and (count-occurances \_ input-string ) is 0 then do
+        (if (count-occurrences \, input-string) > 1 and (count-occurrences \. input-string) < 2 and (count-occurrences \_ input-string ) is 0 then do
             ( return \american ))
-        (if (count-occurances \, input-string) > 0 and not occurs \. input-string then do
+        (if (count-occurrences \, input-string) > 0 and not occurs \. input-string then do
             ( return \weird-pythonic ))
         ( \pythonic )) it)
     (try
@@ -140,7 +149,7 @@ const _ = require 'lodash'
     catch e
         (0)))
 
-(int = ->
+(function int
     (try
         (if typeof it is \number
             (return Math.floor it))
@@ -152,7 +161,7 @@ const _ = require 'lodash'
     catch e
         (0)))
 
-(isJSON = ->
+(function isJSON
     (try
         (if typeof it is \string then do
             (try
@@ -171,10 +180,10 @@ const _ = require 'lodash'
         (false))
     (false))
 
-(is-array = ->
+(function is-array
     (Array.is-array it or isJSON it or it instanceof Array or it instanceof JSON))
 
-(equals = (val1, val2) ->
+(function equals val1, val2
     (try
         (if val1 is val2
             (return yes))
@@ -199,7 +208,7 @@ const _ = require 'lodash'
     catch e
         (no)))
 
-(equals-any = (key, arr) ->
+(function equals-any key, arr
     (if key in arr
         (return yes))
     (for el in flatten arr
@@ -207,26 +216,28 @@ const _ = require 'lodash'
             (return yes)))
     (no))
 
-(is-not-blank = ->
+(function is-not-blank
     (if it `equals-any` [null, undefined, "", {}, []] or empty it
         (return yes))
     (no))
 
-(is-blank = ->
+(function is-blank
     (not is-not-blank it))
 
-(bool = ->
-    ( if it is \true then return \true )
-    ( if it is \false then return \false )
-    (it))
-
-(boolean-to-string = ->
+(function bool
+    ( if it is \true or it is 1 then return \true )
+    ( if it is \false or it is 0 then return \false )
     ( if it then return \true )
     ( \false ))
 
-(bool-string = -> (if it in <[ true false on off yes no ]> then return true else return false))
+(function boolean-to-string
+    ( if it then return \true )
+    ( \false ))
 
-(str = ->
+(function bool-string
+    (if it in <[ true false on off yes no ]> then return true else return false))
+
+(function str
     (if isJSON it or it instanceof Array
         (return JSON.stringify it))
     (if typeof it is \string
@@ -245,22 +256,10 @@ const _ = require 'lodash'
         ("")))
 
 # min inclusive, max exclusive
-(random = (min-val, max-val) ->
+(function random min-val, max-val
     ((+ min-val) Math.random! * (min-val - max-val)))
 
-(scramble-array = ->
-    if it not instanceof Array then return []
-    arr = it.slice!
-    n = len arr
-    for i from n - 1 to 1 by -1
-        j = floor do
-            (* Math.random!) ((+ 1) i)
-        temp = arr[i]
-        arr[i] = arr[j]
-        arr[j] = temp
-    arr)
-
-(input = (prompt, change-to = \str ) ->
+(function input prompt, change-to = \str
     (answer = prompt |> readline-sync.question)
     (if change-to in <[num n number int]> and is-numeric answer
        ( answer = int answer))
@@ -268,19 +267,22 @@ const _ = require 'lodash'
         (answer = bool answer))
     (answer))
 
-(read-file = (fs.read-file-sync))
+(function read-file
+    (fs.read-file-sync ...))
 
-(read-dir = (fs.readdir-sync))
+(function read-dir
+    (fs.readdir-sync ...))
 
-(is-file = ->
+(function is-file
     (fs.exists-sync ... and fs.statSync ... .is-file!))
 
-(is-dir = ->
+(function is-dir
     (fs.exists-sync ... and fs.statSync ... .is-directory!;))
 
-(exists = fs.existsSync)
+(function exists
+    (fs.existsSync ...))
 
-(read-directories = ->
+(function read-directories
     (if not it or is-blank it
         (it = current-dir!))
     (try
@@ -288,7 +290,10 @@ const _ = require 'lodash'
     catch e
         ([])))
 
-(read-files = ->
+(function read-directories-in
+    (read-directories ...))
+
+(function read-files
     (if not it or is-blank it
         (it = current-dir!))
     (try
@@ -296,34 +301,47 @@ const _ = require 'lodash'
     catch e
         ([])))
 
-(count-directories = ->
+(function read-files-in
+    (read-files ...))
+
+(function count-directories
     (len read-directories it))
 
-(count-files = ->
+(function count-files
     (len read-files it))
 
-(str-to-title = -> it.replace /\b\w/g (c) ->
-    (c.to-upper-case!))
+(function count-files-in
+    (count-files ...))
 
-(title = str-to-title)
+(function count-directories-in
+    (count-directories ...))
 
-(round-to-x-digits = (n, digits = 0) ->
+(function str-to-title
+    (it.replace do
+        /\b\w/g
+        (c) ->
+            (upper c)))
+
+(function title
+    (str-to-title it))
+
+(function round-to-x-digits n, digits = 0
     (Math.round(n * (10 ** digits)) / (10 ** digits)))
 
-(to-decimal = ->
+(function to-decimal
     (int str it, 10))
 
-(to-binary = ->
+(function to-binary
     (str int do
         (str it)
         (2)))
 
-(to-hex = ->
+(function to-hex
     (str int do
         (str it)
         (16)))
 
-(transpose = ->
+(function transpose
     (if not it or len it is 0 or len it[0] is 0
         (return []))
     (const row-count = len it)
@@ -339,29 +357,49 @@ const _ = require 'lodash'
         (col++))
     (transposed))
 
-(chunk = (arr, size = 1) ->
+(function chunk arr, size = 1
     (const chunked-arr = [])
     (i = 0)
     (while i < len arr
-        (const chunk = arr.slice do
+        (const a-chunk = arr.slice do
             (i)
             (i + size))
-        (chunked-arr.push chunk))
+        (chunked-arr.push a-chunk))
     (chunked-arr))
 
-(make-function-name = ->
-    (if it[0] is upper it[0]
-        (return title _.camel-case it))
-    (_.camel-case it))
+(function make-function-name name
+    (name = supertrim name)
+    (if /^[a-zA-Z0-9]+$/.test name
+        (return name))
+    (if name[0] is upper name[0]
+        (return title _.camel-case name))
+    (_.camel-case name))
 
-(defun = (name, fn) ->
-    (global[make-function-name name] = fn))
+(function defun name, fn
+    (global[make-function-name name] = fn)
+    (return))
 
-(lambda = (fn) ->
+(function lambda fn
     ((...args) ->
         (fn ...args)))
 
+(function echo
+    (print ...))
+
+(function get-file-extension file-name
+    (if typeof file-name isnt \string or any (equals file-name), [null, undefined] then do
+        (return undefined))
+    (if (file-name.split \. |> len) `is-more-than` 1 then do
+        (return str file.split \. .pop!))
+    (str undefined))
+
+(function execute command
+    (command |> exec-sync |> str))
+
 module.exports =
+    execute: run-command
+    get-file-extension: get-file-extension
+    echo: echo
     lambda: lambda
     defun: defun
     len: len
@@ -374,7 +412,6 @@ module.exports =
     equals: equals
     bool: bool
     random: random
-    scramble-array: scramble-array
     input: input
     read-file: read-file
     read-dir: read-dir
@@ -399,12 +436,12 @@ module.exports =
     have-matching-values: have-matching-values
     has-matching-values-with: has-matching-values-with
     does-not-have-matching-values-with: does-not-have-matching-values-with
-    count-occurances: count-occurances
+    count-occurrences: count-occurrences
     more-than: more-than
     less-than: less-than
     occurs-more-than: occurs-more-than
     occurs-less-than: occurs-less-than
-    count-occurances-in: count-occurances-in
+    count-occurrences-in: count-occurrences-in
     occurs: occurs
     occurs-in: occurs-in
     lower: lower
@@ -416,3 +453,7 @@ module.exports =
     is-more-than: is-more-than
     is-less-than: is-less-than
     is-array: is-array
+    read-directories-in: read-directories-in
+    read-files-in: read-files-in
+    count-directories-in: count-directories-in
+    count-files-in: count-files-in

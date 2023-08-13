@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "child_process": "^1.0.2",
     "cli-color": "^2.0.3",
     "fs": "^0.0.1-security",
     "livescript": "^1.6.0",
@@ -19,6 +20,7 @@
     "email": "givitsvariani@proton.me"
   },
   "main": "index.js",
+  "types": "types.d.ts",
   "keywords": [
     "livescript",
     "syntax",

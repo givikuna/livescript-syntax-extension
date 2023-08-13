@@ -5,6 +5,7 @@
 )
 ({
     print
+    ascii
     len
     current-dir
     dir
@@ -19,8 +20,8 @@
     has-matching-values-with
     occurs
     occurs-in
-    count-occurances
-    count-occurances-in
+    count-occurrences
+    count-occurrences-in
     occurs-more-than
     occurs-less-than
     lower
@@ -57,8 +58,8 @@ print occurs 1 \hello1 #=> true
 print occurs true \heltruelo #=> true
 print occurs \he \34 #=> false
 print 2 `occurs-in` \23 #=> true
-print count-occurances 2 \23 #=> 1
-print 4 `count-occurances-in` \4443 #=> 3
+print count-occurrences 2 \23 #=> 1
+print 4 `count-occurrences-in` \4443 #=> 3
 print occurs-more-than 3 \123 1 #=> false
 print occurs-less-than 3 \123 2 #=> true
 print lower [ \A \B [ \C \D [ \E ] ] ] #=> [ 'a', 'b', [ 'c', 'd', [ 'e' ] ] ]
@@ -91,12 +92,13 @@ print is-array([{ "hi": "3" }, 0]) #=> true
 
 hello-world!
 
-(defun \Factorial ->
-    (if it is 0 or it is 1
+(defun \Factorial (n) ->
+    (if n in [0 1] then do
         (return 1))
-    (it * (it
+    (n
         |> (- 1)
-        |> Factorial)))
+        |> Factorial
+        |> (* n)))
 
 print Factorial 5
 
