@@ -61,9 +61,17 @@ declare module "lsse" {
     export function toHex(n: number): string;
     export function transpose<T>(arr: Array<T>): string;
     export function chunk<T>(arr: Array<T>): string;
-    export function defun(name: string, fn: Function): void;
+    export function defun(name: string, fn: Function): Function;
     export function lambda(fn: Function): Function;
     export function echo(...data: any[]): void;
     export function getFileExtension(fileName: string): string | undefined;
     export function execute(command: string): string;
+    export function length<T>(arg: string | Array<T>): number;
+    export function dec(arg: number | string): number | string;
+    export function inc(arg: number | string): number | string;
+    export function def(name: string, value: any): unknown;
+    export function funcall<T extends (...args: any[]) => any>(fn: T, ...args: Parameters<T>): ReturnType<T>;
+    export function println(...data: any[]): void;
+    export function defmacro(name: string, fn: Function): Function;
+    export function define(name: string, value: any): unknown;
 }

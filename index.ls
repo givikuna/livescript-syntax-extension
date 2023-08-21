@@ -1,9 +1,8 @@
 const readline-sync = require \readline-sync
 const fs = require \fs
 const path = require \path
-const _ = require \lodash
+const lodash = require \lodash
 const { exec-sync } = require \child_process
-
 
 {
     filter
@@ -71,7 +70,7 @@ const { exec-sync } = require \child_process
 
 (function lower
     (if typeof it is \string
-        (return it.toLowerCase!))
+        (return it.to-lower-case!))
     (if typeof Array.is-array it
         (for el in it
             (if typeof el is \string or Array.is-array el
@@ -81,7 +80,7 @@ const { exec-sync } = require \child_process
 
 (function upper
     (if typeof it is \string
-        (return it.toUpperCase!))
+        (return it.to-upper-case!))
     (if typeof Array.is-array it
         (for el in it
             (if typeof el is \string
@@ -133,6 +132,7 @@ const { exec-sync } = require \child_process
         (if (count-occurrences \, input-string) > 0 and not occurs \. input-string then do
             ( return \weird-pythonic ))
         ( \pythonic )) it)
+
     (try
         (Number do
             (((given-style, given-string) ->
@@ -171,8 +171,10 @@ const { exec-sync } = require \child_process
                 (return false)))
         (if typeof it is \Object then do
             (try
-                (if Array.is-array it then return true)
-                (if Array.is-array JSON.parse JSON.stringify it then return true)
+                (if Array.is-array it then do
+                    (return true))
+                (if Array.is-array JSON.parse JSON.stringify it then do
+                    (return true))
                 (return true)
             catch err
                 (return false)))
@@ -212,7 +214,7 @@ const { exec-sync } = require \child_process
     (if key in arr
         (return yes))
     (for el in flatten arr
-        (if key `equals` el
+        (if key `equals` el or key ~= el
             (return yes)))
     (no))
 
@@ -234,7 +236,7 @@ const { exec-sync } = require \child_process
     ( if it then return \true )
     ( \false ))
 
-(function bool-string
+(function is-bool-string
     (if it in <[ true false on off yes no ]> then return true else return false))
 
 (function str
@@ -248,12 +250,23 @@ const { exec-sync } = require \child_process
         ( return \null ))
     (if is-it-NaN it
         ( return \NaN ))
-    (if typeof it is \boolean and bool-string it
+    (if typeof it is \boolean and is-bool-string it
         (return boolean-to-string it))
     (try
         (String it)
     catch e
         ("")))
+
+(function flat-str
+    (if Array.is-array it then do
+        (arr = it.slice!)
+        (for i in [0 til len it]
+            (if Array.is-array arr[i]
+                (arr[i] = flat-str arr[i])
+            else
+                (arr[i] = str arr[i])))
+        (return arr))
+    (it))
 
 # min inclusive, max exclusive
 (function random min-val, max-val
@@ -263,7 +276,7 @@ const { exec-sync } = require \child_process
     (answer = prompt |> readline-sync.question)
     (if change-to in <[num n number int]> and is-numeric answer
        ( answer = int answer))
-    (if change-to in <[bool boolean b]> and bool-string answer
+    (if change-to in <[bool boolean b]> and is-bool-string answer
         (answer = bool answer))
     (answer))
 
@@ -326,7 +339,7 @@ const { exec-sync } = require \child_process
     (str-to-title it))
 
 (function round-to-x-digits n, digits = 0
-    (Math.round(n * (10 ** digits)) / (10 ** digits)))
+    ((/) Math.round(n * (10 ** digits)) (10 ** digits)))
 
 (function to-decimal
     (int str it, 10))
@@ -363,7 +376,7 @@ const { exec-sync } = require \child_process
     (while i < len arr
         (const a-chunk = arr.slice do
             (i)
-            (i + size))
+            ((+) i, size))
         (chunked-arr.push a-chunk))
     (chunked-arr))
 
@@ -372,12 +385,18 @@ const { exec-sync } = require \child_process
     (if /^[a-zA-Z0-9]+$/.test name
         (return name))
     (if name[0] is upper name[0]
-        (return title _.camel-case name))
-    (_.camel-case name))
+        (return title lodash.camel-case name))
+    (lodash.camel-case name))
 
 (function defun name, fn
     (global[make-function-name name] = fn)
-    (return))
+    (return fn))
+
+(function define name, fn
+    (defun name, fn))
+
+(function defmacro name, fn
+    (defun name, fn))
 
 (function lambda fn
     ((...args) ->
@@ -389,14 +408,48 @@ const { exec-sync } = require \child_process
 (function get-file-extension file-name
     (if typeof file-name isnt \string or any (equals file-name), [null, undefined] then do
         (return undefined))
-    (if (file-name.split \. |> len) `is-more-than` 1 then do
+    (if (file-name.split \. |> len) > 1 then do
         (return str file.split \. .pop!))
     (str undefined))
 
 (function execute command
     (command |> exec-sync |> str))
 
+(function println
+    (echo ...))
+
+(function funcall fn, ...args
+    (fn ...args))
+
+(function def name, fn
+    (define name, fn))
+
+(function inc
+    (if typeof it is \number
+        (return ((+) 1 it)))
+    (if it |> is-numeric
+        (return (+ string-to-number it) 1))
+    (it))
+
+(function dec
+    (if typeof it is \number
+        (return ((-) it 1)))
+    (if it |> is-numeric
+        (return ((-) 1 string-to-number it)))
+    (it))
+
+(function length
+    (len it))
+
 module.exports =
+    length: length
+    inc: inc
+    dec: dec
+    def: def
+    defmacro: defmacro
+    funcall: funcall
+    println: println
+    define: define
     execute: execute
     get-file-extension: get-file-extension
     echo: echo
@@ -457,3 +510,4 @@ module.exports =
     read-files-in: read-files-in
     count-directories-in: count-directories-in
     count-files-in: count-files-in
+    flat-str: flat-str

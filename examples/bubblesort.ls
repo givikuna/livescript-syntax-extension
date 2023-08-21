@@ -1,25 +1,15 @@
-({
-    defun
-    print
-    echo
-    len
-    lambda
-} = require '../index')
+require! {
+    '../index':{println,define,dec,inc,len}
+    lodash:lodash
+}
 
-({
-    shuffle
-} = require 'lodash')
 
-(defun \Bubble-Sort (arr) ->
+(println (define \Bubble-Sort (arr) ->
     (const n = len arr)
     (for i in [0 til n]
-        (for j in [0 til (- i) (- 1) n]
+        (for j in [0 til dec ((- i) n)]
             (if arr[j] > arr[j + 1]
                 (const temp = arr[j])
-                (arr[j] = arr[j + 1])
-                (arr[j + 1] = temp))))
-    (arr))
-
-([0 til 10] |> shuffle
-            |> Bubble-Sort
-            |> echo)
+                (arr[j] = arr[inc j])
+                (arr[inc j] = temp))))
+    (arr)) [2 3 562 452 7])
