@@ -10,11 +10,11 @@
   },
   "scripts": {
     "test": "lsc test",
-    "public-to-npm": "npm run compile && npm publish --access=public",
+    "publish-to-npm": "npm run compile && npm publish --access=public",
     "compile": "lsc -c index"
   },
   "name": "lsse",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "author": {
     "name": "Givi Tsvariani",
     "email": "givitsvariani@proton.me"

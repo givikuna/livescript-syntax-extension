@@ -39,7 +39,7 @@ declare module "lsse" {
     export function isBlank(given: any): boolean;
     export function bool(given: number | string | boolean): string;
     export function booleanToString(given: boolean): string;
-    export function boolString(given: string): boolean;
+    export function isBoolString(given: string): boolean;
     export function str(given: any): string;
     export function random(minVal: number, maxVal: number): number;
     export function input(prompt: string, changeTo: string): string | number | boolean;
@@ -74,4 +74,5 @@ declare module "lsse" {
     export function println(...data: any[]): void;
     export function defmacro(name: string, fn: Function): Function;
     export function define(name: string, value: any): unknown;
+    export function sleep(amount: number, type?: "milliseconds" | "seconds" | "hours" | "days" | null): void;
 }

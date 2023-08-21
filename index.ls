@@ -389,8 +389,11 @@ const { exec-sync } = require \child_process
     (lodash.camel-case name))
 
 (function defun name, fn
+    (if not fn
+        (global[make-function-name name] = null)
+        (return global[make-function-name name]))
     (global[make-function-name name] = fn)
-    (return fn))
+    (fn))
 
 (function define name, fn
     (defun name, fn))
@@ -433,7 +436,7 @@ const { exec-sync } = require \child_process
 
 (function dec
     (if typeof it is \number
-        (return ((-) it 1)))
+        (return ((-) it, 1)))
     (if it |> is-numeric
         (return ((-) 1 string-to-number it)))
     (it))
@@ -441,7 +444,34 @@ const { exec-sync } = require \child_process
 (function length
     (len it))
 
+(function sleep amount, type = \milliseconds
+    (if type is \seconds
+        (new-amount = (*) 1000 amount)
+        (start = new Date!get-time!)
+        (while new Date!get-time! - start < new-amount
+            (NOTHING)))
+
+    (if type is \hours
+        (new-amount = (*) 3600000 amount)
+        (start = new Date!get-time!)
+        (while new Date!get-time! - start < new-amount
+            (NOTHING)))
+
+    (if type is \days
+        (new-amount = (*) 86400000 amount)
+        (start = new Date!get-time!)
+        (while new Date!get-time! - start < new-amount
+            (NOTHING)))
+
+    (start = new Date!get-time!)
+    (while new Date!get-time! - start < amount
+        (NOTHING))
+
+    (return))
+
 module.exports =
+    sleep: sleep
+    is-bool-string: is-bool-string
     length: length
     inc: inc
     dec: dec

@@ -518,6 +518,10 @@
     return lodash.camelCase(name);
   }
   function defun(name, fn){
+    if (!fn) {
+      global[makeFunctionName(name)] = null;
+      return global[makeFunctionName(name)];
+    }
     global[makeFunctionName(name)] = fn;
     return fn;
   }
@@ -589,7 +593,7 @@
     if (typeof it === 'number') {
       return curry$(function(x$, y$){
         return x$ - y$;
-      })(it(1));
+      })(it, 1);
     }
     if (isNumeric(
     it)) {
@@ -602,7 +606,44 @@
   function length(it){
     return len(it);
   }
+  function sleep(amount, type){
+    var newAmount, start;
+    type == null && (type = 'milliseconds');
+    if (type === 'seconds') {
+      newAmount = curry$(function(x$, y$){
+        return x$ * y$;
+      })(1000, amount);
+      start = new Date().getTime();
+      while (new Date().getTime() - start < newAmount) {
+        NOTHING;
+      }
+    }
+    if (type === 'hours') {
+      newAmount = curry$(function(x$, y$){
+        return x$ * y$;
+      })(3600000, amount);
+      start = new Date().getTime();
+      while (new Date().getTime() - start < newAmount) {
+        NOTHING;
+      }
+    }
+    if (type === 'days') {
+      newAmount = curry$(function(x$, y$){
+        return x$ * y$;
+      })(86400000, amount);
+      start = new Date().getTime();
+      while (new Date().getTime() - start < newAmount) {
+        NOTHING;
+      }
+    }
+    start = new Date().getTime();
+    while (new Date().getTime() - start < amount) {
+      NOTHING;
+    }
+  }
   module.exports = {
+    sleep: sleep,
+    isBoolString: isBoolString,
     length: length,
     inc: inc,
     dec: dec,
