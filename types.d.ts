@@ -5,7 +5,7 @@ declare module "lsse" {
     export function currentDir(): string;
     export function len<T>(arg: string | Array<T>): number;
     export function print(...data: any[]): void;
-    export function isNumeric(arg: string): number;
+    export function isNumeric(arg: string): boolean;
     export function haveMatchingValues<T>(arr1: Array<T>, arr2: Array<T>): boolean;
     export function hasMatchingValuesWith<T>(arr1: Array<T>, arr2: Array<T>): boolean;
     export function doesNotHaveMatchingValuesWith<T>(arr1: Array<T>, arr2: Array<T>): boolean;
