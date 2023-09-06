@@ -11,6 +11,7 @@ const { exec-sync } = require \child_process
     is-it-NaN
     flatten
     any
+    sort
 } = require 'prelude-ls'
 
 (function dir
@@ -20,7 +21,7 @@ const { exec-sync } = require \child_process
     (process.cwd!))
 
 (function len
-    (it.length))
+    (.length))
 
 (function print ...data
     (console.log ...data))
@@ -29,11 +30,7 @@ const { exec-sync } = require \child_process
     (/^[-+]?\d+(\.\d+)?$/.test it))
 
 (function have-matching-values arr1, arr2
-    (for el1 in arr1
-        (for el2 in arr2
-            (if el1 `equals` el2
-                (return yes))))
-    (no))
+    (arr1.some (item) -> arr2.includes(item)))
 
 (function has-matching-values-with ...args
     (have-matching-values ...args))
@@ -52,9 +49,14 @@ const { exec-sync } = require \child_process
     (if Array.is-array to-search
         (i = 0)
         (while i < len to-search
-            (if not Array.is-array key and Array.is-array to-search[i] then count += to-search `count-occurrences-of` key)
+            (if (not Array.is-array key) \
+                and (Array.is-array to-search[i])
+                    (count += to-search `count-occurrences-of` key))
             (if to-search[i] `equals` key then count++)))
-    (if typeof to-search is \string and typeof key is \string or typeof key is \number or typeof key is \boolean
+    (if typeof to-search is \string \
+        and typeof key is \string \
+        or typeof key is \number \
+        or typeof key is \boolean
         (key = str key)
         (count = to-search.split(key)length - 1))
     (count))
@@ -125,7 +127,9 @@ const { exec-sync } = require \child_process
     (it = supertrim it)
 
     (style = ((input-string) ->
-        (if (count-occurrences \. input-string) > 1 and (count-occurrences \, input-string) < 2 and (count-occurrences \_ input-string) is 0 then do
+        (if ((count-occurrences \. input-string) > 1) \
+            and ((count-occurrences \, input-string) < 2) \
+            and ((count-occurrences \_ input-string) is 0) then do
             ( return \european ))
         (if (count-occurrences \, input-string) > 1 and (count-occurrences \. input-string) < 2 and (count-occurrences \_ input-string ) is 0 then do
             ( return \american ))
@@ -189,19 +193,22 @@ const { exec-sync } = require \child_process
     (try
         (if val1 is val2
             (return yes))
+
         (if val1 `deep-equals` val2
             (return yes))
+
         (if typeof val1 isnt typeof val2
             (return no))
+
         (if Array.is-array val1 isnt Array.is-array val2
             (return no))
+
         (if len Object.keys val1 isnt len Object.keys val2
             (return no))
 
         (if Array.is-array val1 and Array.is-array val2
-            (i = 0)
-            (while i < len val1
-                (if not val1[i] `deep-equals` val2[i] then return no))
+            (return (len(val1) is len(val2)) \
+                and (val1.every (value, index) -> value is arr2[index]))
         else
             (for key in val1
                 (if not val1[key] `deep-equals` val2[key] then return no)))
@@ -219,7 +226,7 @@ const { exec-sync } = require \child_process
     (no))
 
 (function is-not-blank
-    (if it `equals-any` [null, undefined, "", {}, []] or empty it
+    (if (it `equals-any` [null, undefined, "", {}, []]) or (empty it)
         (return yes))
     (no))
 
@@ -237,21 +244,27 @@ const { exec-sync } = require \child_process
     ( \false ))
 
 (function is-bool-string
-    (if it in <[ true false on off yes no ]> then return true else return false))
+    (if it in <[ true false on off yes no ]> then true else false))
 
 (function str
     (if isJSON it or it instanceof Array
         (return JSON.stringify it))
+
     (if typeof it is \string
         (return it))
+
     (if typeof it is \undefined
         ( return \undefined ))
+
     (if it is null
         ( return \null ))
+
     (if is-it-NaN it
         ( return \NaN ))
+
     (if typeof it is \boolean and is-bool-string it
         (return boolean-to-string it))
+
     (try
         (String it)
     catch e
@@ -332,8 +345,7 @@ const { exec-sync } = require \child_process
 (function str-to-title
     (it.replace do
         /\b\w/g
-        (c) ->
-            (upper c)))
+        (c) -> (upper c)))
 
 (function title
     (str-to-title it))
@@ -388,22 +400,97 @@ const { exec-sync } = require \child_process
         (return title lodash.camel-case name))
     (lodash.camel-case name))
 
-(function defun name, fn
-    (if not fn
+(function defun name, func
+    (if global.has-own-property name then do
+        (return null))
+    (if not func
         (global[make-function-name name] = null)
         (return global[make-function-name name]))
-    (global[make-function-name name] = fn)
-    (fn))
+    (global[make-function-name name] = func)
+    (func))
 
-(function define name, fn
-    (defun name, fn))
+(function define name, func
+    (defun name, func))
 
-(function defmacro name, fn
-    (defun name, fn))
+(function defmacro name, func
+    (defun name, func))
 
-(function lambda fn
+(function defconstant name, val
+    (Object.define-property do
+        global
+        name
+        {
+            value: val
+            writable: false
+            configurable: false
+        })
+    (val))
+
+(function defparameter name, val
+    (if global.has-own-property name then do
+        (return null))
+    (defun name, val))
+
+(function defvar name
+    (if not global.has-own-property name then do
+        (global[name] = undefined)))
+
+(function lambda func
     ((...args) ->
-        (fn ...args)))
+        (func ...args)))
+
+(function fn func
+    (lambda func))
+
+(function clone
+    (try
+        (if typeof it isnt \object or it is nil then do
+            (return it))
+        (if it |> Array.is-array then do
+            (cloned-arr = [])
+            (i = 0)
+            (while i < len it
+                (cloned-arr.push clone it[i])
+                (i = inc i))
+            (return cloned-arr))
+        (if it instanceof Date then do
+            (return new Date it))
+        (if it instanceof RegExp then do
+            (return new RegExp it.source, it.flags))
+        (if typeof it is \function then do
+            (return it))
+        (cloned-obj = {})
+        (for key in it
+            (if it.has-own-property key then do
+                (cloned-obj[key] = clone it[key])))
+        (cloned-obj)
+    catch e
+        (console.error e)
+        (it)))
+
+(t = true)
+
+(nil = null)
+
+(function list ...elements
+    (elements))
+
+(function mapcar func, list_
+    (list.map func))
+
+(function append list1, list2
+    ([...list1, ...list2]))
+
+/*
+(function reverse
+    (if typeof it is \string then do
+        (it.split '' .reverse!join ''))
+    (if typeof it is \number then do
+        ((*) parseFloat it.toString!split '' .reverse!join '' Math.sign it))
+    (if it |> Array.is-array then do
+        (it.reverse!))
+    (it))
+*/
 
 (function echo
     (print ...))
@@ -415,17 +502,18 @@ const { exec-sync } = require \child_process
         (return str file.split \. .pop!))
     (str undefined))
 
-(function execute command
-    (command |> exec-sync |> str))
+(function execute
+    (if typeof it isnt \string then return '')
+    (it |> exec-sync |> str))
 
 (function println
     (echo ...))
 
-(function funcall fn, ...args
-    (fn ...args))
+(function funcall func, ...args
+    (func ...args))
 
-(function def name, fn
-    (define name, fn))
+(function def name, func
+    (define name, func))
 
 (function inc
     (if typeof it is \number
@@ -469,7 +557,61 @@ const { exec-sync } = require \child_process
 
     (return))
 
+(lazy = (func) ->
+    (evaluated = no)
+    (result = null)
+    ((...args) ->
+        (if not evaluated then do
+            (result = func ...args)
+            (evaluated = yes))
+        (result)))
+
+(throttle = (func, delay) ->
+    (last-time = 0)
+    (return (...args) ->
+        (current-time = Date.now!)
+        (if ((-) current-time, last-time) >= delay then do
+            (func.apply this, args)
+            (last-time = current-time))))
+
+(debounce = (func, delay) ->
+    (timeout-id = null)
+    ((...args) ->
+        (clear-timeout timeout-id)
+        (timeout-id = set-timeout do
+            -> func ...args
+            delay)
+        (return)))
+
+(noop = -> NOTHING; return)
+
+(identity = -> it)
+
+(before = (before-func, func) ->
+    ((...args) ->
+        (before-func!)
+        (func ...args)))
+
+(after = (func, after-func) ->
+    ((...args) ->
+        (result = func ...args)
+        (after-func!)
+        (result)))
+
+(sorted = sort)
+
+(say = echo)
+
 module.exports =
+    sorted: sorted
+    clone: clone
+    say: say
+    before: before
+    after: after
+    lazy: lazy
+    throttle: throttle
+    debounce: debounce
+    noop: noop
     sleep: sleep
     is-bool-string: is-bool-string
     length: length
@@ -541,3 +683,13 @@ module.exports =
     count-directories-in: count-directories-in
     count-files-in: count-files-in
     flat-str: flat-str
+    equals-any: equals-any
+    list: list
+    mapcar: mapcar
+    t: t
+    nil: nil
+    append: append
+    defconstant: defconstant
+    defparameter: defparameter
+    defvar: defvar
+    fn: fn

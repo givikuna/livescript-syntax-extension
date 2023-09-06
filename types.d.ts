@@ -75,4 +75,14 @@ declare module "lsse" {
     export function defmacro(name: string, fn: Function): Function;
     export function define(name: string, value: any): unknown;
     export function sleep(amount: number, type?: "milliseconds" | "seconds" | "hours" | "days" | null): void;
+    export const noop: () => void;
+    export const debounce: (fn: Function, delay: number) => void;
+    export const throttle: (fn: Function, delay: number) => void;
+    export const lazy: <T extends (...args: any[]) => any>(fn: T) => (...args: Parameters<T>) => ReturnType<T>;
+
+    export const before: <T extends any[], R>(
+        beforeFn: () => void | boolean,
+        fn: (...args: T) => R,
+    ) => (...args: T) => R;
+    export const after: <T extends any[], R>(fn: (...args: T) => R, afterFn: () => void | boolean) => (...args: T) => R;
 }

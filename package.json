@@ -14,7 +14,7 @@
     "compile": "lsc -c index"
   },
   "name": "lsse",
-  "version": "1.0.7",
+  "version": "1.0.9",
   "author": {
     "name": "Givi Tsvariani",
     "email": "givitsvariani@proton.me"
