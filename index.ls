@@ -12,6 +12,8 @@ const { exec-sync } = require \child_process
     flatten
     any
     sort
+    reverse
+    unique
 } = require 'prelude-ls'
 
 (function dir
@@ -30,7 +32,7 @@ const { exec-sync } = require \child_process
     (/^[-+]?\d+(\.\d+)?$/.test it))
 
 (function have-matching-values arr1, arr2
-    (arr1.some (item) -> arr2.includes(item)))
+    (arr1.some (item) -> arr2.includes item))
 
 (function has-matching-values-with ...args
     (have-matching-values ...args))
@@ -85,7 +87,7 @@ const { exec-sync } = require \child_process
         (return it.to-upper-case!))
     (if typeof Array.is-array it
         (for el in it
-            (if typeof el is \string
+            (if typeof el is \string then do
                 (it[it.index-of el] = upper el)))
         (return it))
     (it))
@@ -119,7 +121,9 @@ const { exec-sync } = require \child_process
 (is-no-less-than = no-less-than)
 
 (function supertrim
-    (it.replace /\r?\n|\r/g '' .trim!))
+    (it
+        |> (.replace /\r?\n|\r/g '')
+        |> (.trim!)))
 
 (function string-to-number
     (if typeof it isnt \string or /^\d+[a-zA-Z]*$/.test it is false or count-occurrences \- it > 0 and not it.starts-with \-
@@ -272,18 +276,20 @@ const { exec-sync } = require \child_process
 
 (function flat-str
     (if Array.is-array it then do
-        (arr = it.slice!)
-        (for i in [0 til len it]
-            (if Array.is-array arr[i]
-                (arr[i] = flat-str arr[i])
-            else
-                (arr[i] = str arr[i])))
-        (return arr))
+        (return it
+            |> flatten
+            |> (.map (el) -> str el)))
     (it))
 
 # min inclusive, max exclusive
 (function random min-val, max-val
-    ((+ min-val) Math.random! * (min-val - max-val)))
+    (if min >= max then do
+        (return min))
+    (max-val
+        |> (- min-val)
+        |> (* Math.random!)
+        |> floor
+        |> (+ min-val)))
 
 (function input prompt, change-to = \str
     (answer = prompt |> readline-sync.question)
@@ -303,7 +309,7 @@ const { exec-sync } = require \child_process
     (fs.exists-sync ... and fs.statSync ... .is-file!))
 
 (function is-dir
-    (fs.exists-sync ... and fs.statSync ... .is-directory!;))
+    (fs.exists-sync ... and fs.statSync ... .is-directory!))
 
 (function exists
     (fs.existsSync ...))
@@ -312,7 +318,9 @@ const { exec-sync } = require \child_process
     (if not it or is-blank it
         (it = current-dir!))
     (try
-        (filter is-dir, read-dir it)
+        (it
+            |> read-dir
+            |> filter is-dir)
     catch e
         ([])))
 
@@ -323,7 +331,9 @@ const { exec-sync } = require \child_process
     (if not it or is-blank it
         (it = current-dir!))
     (try
-        (filter is-file, read-dir it)
+        (it
+            |> read-dir
+            |> filter is-file)
     catch e
         ([])))
 
@@ -351,7 +361,12 @@ const { exec-sync } = require \child_process
     (str-to-title it))
 
 (function round-to-x-digits n, digits = 0
-    ((/) Math.round(n * (10 ** digits)) (10 ** digits)))
+    (if isNaN n or isNaN digits then do
+        (return n))
+    (number
+        |> (* ((**) 10, digits))
+        |> Math.round
+        |> (/ ((**) 10, digits))))
 
 (function to-decimal
     (int str it, 10))
@@ -373,10 +388,10 @@ const { exec-sync } = require \child_process
     (const col-count = len it[0])
     (const transposed = [])
     (col = 0)
-    (while col < col-count
+    (while (<) col, col-count
         (tranposed[col] = [])
         (row = 0)
-        (while row < row-count
+        (while (<) row, row-count
             (transposed[col][row] = it[row][col])
             (row++))
         (col++))
@@ -386,9 +401,7 @@ const { exec-sync } = require \child_process
     (const chunked-arr = [])
     (i = 0)
     (while i < len arr
-        (const a-chunk = arr.slice do
-            (i)
-            ((+) i, size))
+        (const a-chunk = arr.slice i, ((+) i, size))
         (chunked-arr.push a-chunk))
     (chunked-arr))
 
@@ -446,23 +459,29 @@ const { exec-sync } = require \child_process
     (try
         (if typeof it isnt \object or it is nil then do
             (return it))
-        (if it |> Array.is-array then do
+
+        (if Array.is-array it then do
             (cloned-arr = [])
             (i = 0)
             (while i < len it
                 (cloned-arr.push clone it[i])
                 (i = inc i))
             (return cloned-arr))
+
         (if it instanceof Date then do
             (return new Date it))
+
         (if it instanceof RegExp then do
             (return new RegExp it.source, it.flags))
+
         (if typeof it is \function then do
             (return it))
+
         (cloned-obj = {})
         (for key in it
             (if it.has-own-property key then do
                 (cloned-obj[key] = clone it[key])))
+
         (cloned-obj)
     catch e
         (console.error e)
@@ -481,16 +500,23 @@ const { exec-sync } = require \child_process
 (function append list1, list2
     ([...list1, ...list2]))
 
-/*
-(function reverse
+(uniq = unique)
+
+(function rev
     (if typeof it is \string then do
         (it.split '' .reverse!join ''))
     (if typeof it is \number then do
-        ((*) parseFloat it.toString!split '' .reverse!join '' Math.sign it))
-    (if it |> Array.is-array then do
+        # ((*) parseFloat it.toString!split '' .reverse!join '' Math.sign it)
+        (it
+            |> (.to-string!)
+            |> (.split '')
+            |> (.reverse!)
+            |> (.join '')
+            |> parseFloat
+            |> (* Math.sign it)))
+    (if Array.is-array it then do
         (it.reverse!))
-    (it))
-*/
+    (reverse it))
 
 (function echo
     (print ...))
@@ -499,7 +525,10 @@ const { exec-sync } = require \child_process
     (if typeof file-name isnt \string or any (equals file-name), [null, undefined] then do
         (return undefined))
     (if (file-name.split \. |> len) > 1 then do
-        (return str file.split \. .pop!))
+        (return file
+            |> (.split '.')
+            |> str
+            |> (.pop!)))
     (str undefined))
 
 (function execute
@@ -519,13 +548,13 @@ const { exec-sync } = require \child_process
     (if typeof it is \number
         (return ((+) 1 it)))
     (if it |> is-numeric
-        (return (+ string-to-number it) 1))
+        (return (+) 1 string-to-number it))
     (it))
 
 (function dec
     (if typeof it is \number
         (return ((-) it, 1)))
-    (if it |> is-numeric
+    (if is-numeric it
         (return ((-) 1 string-to-number it)))
     (it))
 
@@ -536,23 +565,23 @@ const { exec-sync } = require \child_process
     (if type is \seconds
         (new-amount = (*) 1000 amount)
         (start = new Date!get-time!)
-        (while new Date!get-time! - start < new-amount
+        (while (<) ((-) new Date!get-time!, start), new-amount
             (NOTHING)))
 
     (if type is \hours
         (new-amount = (*) 3600000 amount)
         (start = new Date!get-time!)
-        (while new Date!get-time! - start < new-amount
+        (while (<) ((-) new Date!get-time!, start), new-amount
             (NOTHING)))
 
     (if type is \days
         (new-amount = (*) 86400000 amount)
         (start = new Date!get-time!)
-        (while new Date!get-time! - start < new-amount
+        (while (<) ((-) new Date!get-time!, start), new-amount
             (NOTHING)))
 
     (start = new Date!get-time!)
-    (while new Date!get-time! - start < amount
+    (while (<) ((-) new Date!get-time!, start), amount
         (NOTHING))
 
     (return))
@@ -693,3 +722,4 @@ module.exports =
     defparameter: defparameter
     defvar: defvar
     fn: fn
+    rev: rev

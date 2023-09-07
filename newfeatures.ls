@@ -1,14 +1,17 @@
 require! {
-    './index':{println,defconstant,say,list,append,str,defvar,clone}
+    './index':{println,defconstant,say,list,append,str,defvar,clone,sorted,uniq}
     lodash:lodash
     'prelude-ls':{reverse}
 }
 
 (say str reverse list 1 2 3 4 5 6)
 
-(say str reverse append do
-    list 1 2 3 4
-    list 5 6 7 8)
+(say do
+    (append do
+        list 1 2 3 4
+        list 5 6 7 8)
+        |> reverse
+        |> str)
 
 (defconstant \arr list 1 2 3 4 5 6)
 
@@ -16,6 +19,7 @@ require! {
 
 ( defvar \newarr )
 
-(newarr = clone arr)
+(newarr = list 1 2 3)
 
-(say newarr)
+(say reverse sorted uniq append newarr, arr)
+
