@@ -98,4 +98,5 @@ module.exports = {
     lib.E
     lib.to-deg
     lib.to-rad
+    lib.exec
 }
