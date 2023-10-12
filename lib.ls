@@ -3,8 +3,6 @@ require! {
     'child_process':{exec-sync}
 }
 
-readline-sync = require('readlineSync').readline-sync
-
 mapcar = (f, xs) --> [f x for x in xs]
 
 str = (s) -->
@@ -152,13 +150,9 @@ cond = (...conditions) ->
 
 expt = flip Math.pow
 
-sqrt = Math.sqrt
-
 replace-all = (x1, x2, xs) --> xs.replace-all x1, x2
 
 remove-all = (x, xs) --> xs.replace-all x, ''
-
-append = (++)
 
 string-append = (s1, s2) --> s1 + s2
 
@@ -169,14 +163,6 @@ say = console.log
 index-of = (x, xs) --> xs.index-of x
 
 is-numeric = /^[-+]?\d+(\.\d+)?$/.test
-
-ln = Math.log
-
-sin = Math.sin
-
-cos = Math.cos
-
-tan = Math.tan
 
 csc = (1 /) >> Math.sin
 
@@ -196,15 +182,7 @@ arcsec = (1 /) >> Math.acos
 
 arctan = (1 /) >> Math.atan
 
-log = (base, x) --> (Math.log x) / (Math.log base)
-
-tau = Math.pi * 2
-
-e = Math.E
-
 expm1 = Math.expm1
-
-exp = Math.exp
 
 replace = (x1, x2, xs) --> xs.replace x1, x2
 
@@ -222,6 +200,8 @@ make-hash = (xs) -->
     obj
 
 fold0 = (f, xs) --> fold f, 0, xs
+
+foldl0 = fold0
 
 foldr0 = (f, xs) --> foldr f, 0, xs
 
@@ -317,3 +297,73 @@ lambda = (f) -> (...args) -> f ...args
 fn = lambda
 
 exec = exec-sync
+
+module.exports = {
+    mapcar
+    str
+    int
+    random
+    upper
+    inc
+    dec
+    supertrim
+    freq
+    len
+    enumerate
+    member
+    string-append
+    map2
+    list-ref
+    hash-ref
+    build-list
+    title
+    uniq
+    memoize
+    sorted
+    noop
+    id
+    before
+    after
+    throttle
+    debounce
+    lazy
+    listTo
+    listFrom
+    bool
+    cond
+    pipe
+    expt
+    replaceAll
+    removeAll
+    iter
+    say
+    indexOf
+    isNumeric
+    csc
+    sec
+    cot
+    arcsin
+    arccos
+    arctan
+    expm1
+    replace
+    trim-start
+    trim-end
+    input
+    charcode
+    make-hash
+    fold0
+    foldr0
+    foldl0
+    transpose
+    chunk
+    sleep
+    lambda
+    fn
+    defun
+    define
+    defconstant
+    defparameter
+    defvar
+    defmacro
+}

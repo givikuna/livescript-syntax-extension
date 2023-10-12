@@ -10,10 +10,10 @@
   "scripts": {
     "test": "mocha",
     "publish-to-npm": "npm run compile && npm publish --access=public",
-    "compile": "lsc -c index"
+    "compile": "lsc -c index&& lsc -c lib"
   },
   "name": "lsse",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "author": {
     "name": "Givi Tsvariani",
     "email": "givitsvariani@proton.me"
