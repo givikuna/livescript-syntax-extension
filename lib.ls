@@ -1,5 +1,5 @@
 require! {
-    'prelude-ls':{tail,fold,foldr,flip}
+    'prelude-ls':{tail,fold,foldr,flip,foldl,filter}
     'child_process':{exec-sync}
 }
 
@@ -46,8 +46,6 @@ enumerate = (.entries!)
 member = (k, xs) --> xs.includes k
 
 string-append = (s1, s2) --> s1 + s2
-
-append = (++)
 
 map2 = (f, xs, ys) --> xs.map (x, i) -> f x, ys[i]
 
@@ -153,8 +151,6 @@ expt = flip Math.pow
 replace-all = (x1, x2, xs) --> xs.replace-all x1, x2
 
 remove-all = (x, xs) --> xs.replace-all x, ''
-
-string-append = (s1, s2) --> s1 + s2
 
 iter = (.values!)
 
@@ -298,7 +294,50 @@ fn = lambda
 
 exec = exec-sync
 
+to-deg = parseFloat >> (* 180.0) >> (/ Math.pi)
+
+to-rad = parseFloat >> (* Math.pi) >> (/ 180.0)
+
+E = (n, ex) --> n * Math.pow(10, ex) # scientific notation
+
+G = 6.67408`E`-11
+
+g = 9.807mpss
+
+factorial = (n) --> if n is 0 or n is 1 then 1 else n * factorial dec n
+
+palindrome = (s) --> s is rev s
+
+divisors = (n) --> filter ((x) -> n % x is 0), [1 til n]
+
+perfect = (n) --> n is fold0 (+), divisors n
+
+natural-number = (n) --> n > 0 and Number.is-integer n
+
+is-int = Number.is-integer
+
+change-in = (f, o) --> if typeof f is \number then f - o else f[0] - f[1]
+
+foldstr = (f, xs) --> fold f, '', xs
+
+foldt = (f, xs) --> fold true '' xs
+
+foldf = (f, xs) --> fold false '' xs
+
 module.exports = {
+    foldstr
+    foldt
+    foldf
+    change-in
+    is-int
+    natural-number
+    E
+    G
+    g
+    factorial
+    palindrome
+    divisors
+    perfect
     mapcar
     str
     int
@@ -327,18 +366,18 @@ module.exports = {
     throttle
     debounce
     lazy
-    listTo
-    listFrom
+    list-to
+    list-til
     bool
     cond
     pipe
     expt
-    replaceAll
-    removeAll
+    replace-all
+    remove-all
     iter
     say
-    indexOf
-    isNumeric
+    index-of
+    is-numeric
     csc
     sec
     cot

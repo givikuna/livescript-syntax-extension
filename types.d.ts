@@ -64,4 +64,20 @@ declare module "lsse" {
     export function sleep(amount: number, type?: sleepOption): void;
     export function lambda<T>(f: (...args: any) => T): typeof f;
     export const fn: typeof lambda;
+    export function exec(cmd: string): string;
+    export function toDeg(rad: number): number;
+    export function toRad(deg: number): number;
+    export function E(n: number, ex: number): number;
+    export const G: number;
+    export const g: 9.807;
+    export function factorial(n: number): number;
+    export function palindrome(s: string): boolean;
+    export function divisors(n: number): number[];
+    export function perfect(n: number): boolean;
+    export function naturalNumber(n: number): boolean;
+    export function isInt(n: number): boolean;
+    export function changeIn(f: number, o: number): number;
+    export function foldstr(f: (x: string, y: string) => string, xs: Array<string>): string;
+    export function foldt(f: (x: boolean, y: boolean) => boolean, xs: Array<boolean>): boolean;
+    export function foldf(f: (x: boolean, y: boolean) => boolean, xs: Array<boolean>): boolean;
 }
