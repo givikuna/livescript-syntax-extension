@@ -1,7 +1,9 @@
 require! {
-    'prelude-ls':{tail,fold,foldr,flip,foldl,filter}
+    'prelude-ls':{tail,fold,foldr,flip,foldl,filter,map}
     'child_process':{exec-sync}
 }
+
+mathjs = require 'mathjs'
 
 mapcar = (f, xs) --> [f x for x in xs]
 
@@ -324,7 +326,34 @@ foldt = (f, xs) --> fold true '' xs
 
 foldf = (f, xs) --> fold false '' xs
 
+summation = (n, i, f) --> fold0 (+), [f x for x in [i to n]]
+
+comb = (n, k) --> (factorial n) / ((factorial n - k) * factorial k)
+
+invert-matrix = mathjs.inv
+
+add-matrix = (xs, ys) --> xs.map (a, i) -> a.map (x, j) -> x + ys[i][j]
+
+minus-matrix = (xs, ys) --> xs.map (a, i) -> a.map (x, j) -> x - ys[i][j]
+
+multiply-matrix = (A, B) -->
+    if len A[0] isnt len B then throw new Error 'length of A[0] must equal length of B'
+    C = [[0 for b in B[0]] for a in A]
+    for i in [0 til len A]
+        for j in [0 til len B[0]]
+            C[i][j] = fold0 (+), A[i].map ((a, k) -> a * B[k][j])
+    C
+
+divide-matrix = (A, B) --> multiply-matrix A, invert-matrix b
+
 module.exports = {
+    add-matrix
+    minus-matrix
+    invert-matrix
+    multiply-matrix
+    divide-matrix
+    comb
+    summation
     foldstr
     foldt
     foldf

@@ -80,4 +80,11 @@ declare module "lsse" {
     export function foldstr(f: (x: string, y: string) => string, xs: Array<string>): string;
     export function foldt(f: (x: boolean, y: boolean) => boolean, xs: Array<boolean>): boolean;
     export function foldf(f: (x: boolean, y: boolean) => boolean, xs: Array<boolean>): boolean;
+    export function summation(n: number, i: number, f: (x: number) => number): number;
+    export function comb(n: number, k: number): number;
+    export function invertMatrix(A: number[][]): number[][];
+    export function addMatrix(A: number[][], B: number[][]): number[][];
+    export function minusMatrix(A: number[][], B: number[][]): number[][];
+    export function multiplyMatrix(A: number[][], B: number[][]): number[][];
+    export function divideMatrix(A: number[][], B: number[][]): number[][];
 }

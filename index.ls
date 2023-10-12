@@ -99,4 +99,11 @@ module.exports = {
     lib.to-deg
     lib.to-rad
     lib.exec
+    lib.add-matrix
+    lib.minus-matrix
+    lib.invert-matrix
+    lib.multiply-matrix
+    lib.divide-matrix
+    lib.comb
+    lib.summation
 }
