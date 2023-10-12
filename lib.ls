@@ -57,7 +57,7 @@ hash-ref = (k, xs) --> xs[k]
 
 build-list = (n, f) --> [0 til n].map f
 
-title = (s) --> xs |> (.char-at 0) |> (.to-upper-case!) |> (+ s.slice 1)
+title = (s) --> s |> (.char-at 0) |> (.to-upper-case!) |> (+ s.slice 1)
 
 uniq = (xs) --> [...(new Set xs)]
 

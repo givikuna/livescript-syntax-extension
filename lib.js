@@ -125,7 +125,7 @@
     function(it){
       return it.charAt(0);
     }(
-    xs)));
+    s)));
   };
   uniq = function(xs){
     return arrayFrom$(new Set(xs));
