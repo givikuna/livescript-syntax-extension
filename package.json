@@ -1,7 +1,6 @@
 {
   "dependencies": {
     "child_process": "^1.0.2",
-    "cli-color": "^2.0.3",
     "fs": "^0.0.1-security",
     "livescript": "^1.6.0",
     "lodash": "^4.17.21",
@@ -9,7 +8,7 @@
     "readline-sync": "^1.4.10"
   },
   "scripts": {
-    "test": "lsc test",
+    "test": "mocha",
     "publish-to-npm": "npm run compile && npm publish --access=public",
     "compile": "lsc -c index"
   },
@@ -37,5 +36,8 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/givikuna/livescript-syntax-extension.git"
+  },
+  "devDependencies": {
+    "mocha": "^10.2.0"
   }
 }

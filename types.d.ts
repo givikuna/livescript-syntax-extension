@@ -1,88 +1,78 @@
-declare module "lsse" {
-    // export function doSomething(arg: string): void;
-    // export const myValue: number;
-    export function dir(): string[];
-    export function currentDir(): string;
-    export function len<T>(arg: string | Array<T>): number;
-    export function print(...data: any[]): void;
-    export function isNumeric(arg: string): boolean;
-    export function haveMatchingValues<T>(arr1: Array<T>, arr2: Array<T>): boolean;
-    export function hasMatchingValuesWith<T>(arr1: Array<T>, arr2: Array<T>): boolean;
-    export function doesNotHaveMatchingValuesWith<T>(arr1: Array<T>, arr2: Array<T>): boolean;
-    export function occurs<T>(key: string | number | boolean, toSearch: string | Array<T>): boolean;
-    export function occursIn<T>(key: string | number | boolean, toSearch: string | Array<T>): boolean;
-    export function countOccurrences<T>(key: string | number | boolean, toSearch: string | Array<T>): boolean;
-    export function countOccurrencesIn<T>(key: string | number | boolean, toSearch: string | Array<T>): boolean;
-    export function occursMoreThan<T>(
-        key: string | number | boolean,
-        toSearch: string | Array<T>,
-        count: number,
-    ): boolean;
-    export function occursLessThan<T>(
-        key: string | number | boolean,
-        toSearch: string | Array<T>,
-        count: number,
-    ): boolean;
-    export function lower<T>(key: string | Array<T>): string | Array<T>;
-    export function upper<T>(key: string | Array<T>): string | Array<T>;
-    export const ONCE: number;
-    export const nothing: null;
-    export const NOTHING: null;
-    export function supertrim(given: string): string;
-    export function stringToNumber(given: string): number;
-    export function int(given: number | string): number;
-    export function isJSON(given: string | Object): boolean;
-    export function isArray(given: any): boolean;
-    export function equals(val1: any, val2: any): boolean;
-    export function equalsAny<T>(key: any, arr: Array<T>): boolean;
-    export function isNotBlank(given: any): boolean;
-    export function isBlank(given: any): boolean;
-    export function bool(given: number | string | boolean): string;
-    export function booleanToString(given: boolean): string;
-    export function isBoolString(given: string): boolean;
-    export function str(given: any): string;
-    export function random(minVal: number, maxVal: number): number;
-    export function input(prompt: string, changeTo: string): string | number | boolean;
-    export function isFile(filename: string): boolean;
-    export function isDir(dirname: string): boolean;
-    export function readDirectories(dirname?: string): string[];
-    export function readDirectoriesIn(dirname?: string): string[];
-    export function readFilesIn(dirname?: string): string[];
-    export function readFiles(dirname?: string): string[];
-    export function countDirectories(dirname?: string): number;
-    export function countFiles(dirname?: string): number;
-    export function countDirectoriesIn(dirname?: string): number;
-    export function countFilesIn(dirname?: string): number;
-    export function strToTitle(given: string): string;
-    export function title(given: string): string;
-    export function roundToXDigits(n: number, digits?: number): number;
-    export function toDecimal(n: number): number;
-    export function toBinary(n: number): string;
-    export function toHex(n: number): string;
-    export function transpose<T>(arr: Array<T>): string;
-    export function chunk<T>(arr: Array<T>): string;
-    export function defun(name: string, fn: Function): Function;
-    export function lambda(fn: Function): Function;
-    export function echo(...data: any[]): void;
-    export function getFileExtension(fileName: string): string | undefined;
-    export function execute(command: string): string;
-    export function length<T>(arg: string | Array<T>): number;
-    export function dec(arg: number | string): number | string;
-    export function inc(arg: number | string): number | string;
-    export function def(name: string, value: any): unknown;
-    export function funcall<T extends (...args: any[]) => any>(fn: T, ...args: Parameters<T>): ReturnType<T>;
-    export function println(...data: any[]): void;
-    export function defmacro(name: string, fn: Function): Function;
-    export function define(name: string, value: any): unknown;
-    export function sleep(amount: number, type?: "milliseconds" | "seconds" | "hours" | "days" | null): void;
-    export const noop: () => void;
-    export const debounce: (fn: Function, delay: number) => void;
-    export const throttle: (fn: Function, delay: number) => void;
-    export const lazy: <T extends (...args: any[]) => any>(fn: T) => (...args: Parameters<T>) => ReturnType<T>;
+type PipeFunction<T, U> = (x: T) => U;
 
-    export const before: <T extends any[], R>(
-        beforeFn: () => void | boolean,
-        fn: (...args: T) => R,
-    ) => (...args: T) => R;
-    export const after: <T extends any[], R>(fn: (...args: T) => R, afterFn: () => void | boolean) => (...args: T) => R;
+declare module "lsse" {
+    export function mapcar<T, T2>(f: (x: T2) => T2, xs: Array<T>): Array<T2>
+    export function str(s: any): string;
+    export function int(n: number | string): number;
+    export function random(minVal: number, maxVal: number): number;
+    export function lower(s: string): string;
+    export function upper(s: string): string;
+    export function inc(n: number): number;
+    export function dec(n: number): number;
+    export function supertrim(s: string): string;
+    export function freq<T>(k: T, xs: T[]): number;
+    export function len<T>(xs: string | Array<T>): number;
+    export function enumerate<T>(xs: Array<T>): Map<number, T>;
+    export function member<T>(k: T, xs: Array<T>): boolean;
+    export function stringAppend(s1: string, s2: string): string;
+    export function append<T, T2>(xs: Array<T>, ys: Array<T2>): Array<T | T2>;
+    export function map2<T, T2, T3>(f: (x: T, y: T2) => T3, xs: Array<T>, ys: Array<T>): Array<T3>;
+    export function listRef<T>(i: number, xs: Array<T>): T;
+    export function hashRef<T>(k: string, xs: {[key: string]: T}): T;
+    export function buildList<T>(n: number, f: (n: number) => T): Array<ReturnType<typeof f>>;
+    export function title(s: string): string;
+    export function uniq(xs: Array<any>): Array<any>;
+    export function memoize(f: Function): typeof f;
+    export function sorted<T>(xs: Array<T>): Array<T>;
+    export function noop(): void;
+    export function id<T>(it: T): T;
+    export function before(beforeFunc: Function, func: Function): Function;
+    export function after(func: Function, afterFunc: Function): Function;
+    export function throttle(func: Function, delay: number): Function;
+    export function debounce(func: Function, delay: number): Function;
+    export function lazy(f: Function): Function;
+    export function listTo(x: number, y: number): Array<number>;
+    export function listFrom(x: number, y: number): Array<number>;
+    export function bool(it: any): boolean;
+    export function pipe<T, U>(x: T, ...fs: Array<PipeFunction<any, any>>): U;
+    export function cond<T>(...conditions: Array<[boolean, any] | [string, any]>): T;
+    export function expt(n: number, power: number): number;
+    export function sqrt(n: number): number;
+    export function replaceAll(x1: string, x2: string, xs: string): string;
+    export function removeAll(x: string, xs: string): string;
+    export function append<T, U>(xs: Array<T>, ys: Array<U>): Array<T | U>;
+    export function stringAppend(s1: string, s2: string): string;
+    export function iter<T>(xs: Array<T>): Iterator<T>;
+    export const say: typeof console.log;
+    export function indexOf<T>(x: T, xs: T[]): number;
+    export function isNumeric(xs: string): boolean;
+    export function ln(n: number): number;
+    export function sin(n: number): number;
+    export function cos(n: number): number;
+    export function tan(n: number): number;
+    export function csc(n: number): number;
+    export function sec(n: number): number;
+    export function cot(n: number): number;
+    export function arcsin(n: number): number;
+    export function arccos(n: number): number;
+    export function arctan(n: number): number;
+    export function log(base: number, x: number): number;
+    export const tau: number;
+    export const e: typeof Math.E;
+    export const exmp1: typeof Math.expm1;
+    export const exp: typeof Math.exp;
+    export function replace(x1: string, x2: string, xs: string): string;
+    export function trimStart(s: string): string;
+    export function trimEnd(s: string): string;
+    export function input(s: string): string;
+    export function charcode(s: string): string;
+    export function makeHash(xs: [string, any]): {[key: string]: any};
+    export function fold0<T>(f: (x: T, y: T) => T, xs: Array<T>): T;
+    export function fodlr0<T>(f: (x: T, y: T) => T, xs: Array<T>): T;
+    export function transpose<T>(xs: T[]): T[];
+    export function chunk<T>(arr: T[], size: number): T[][];
+    export type sleepOption = 'milliseconds' | 'seconds' | 'hours' | 'days';
+    export function sleep(amount: number, type?: sleepOption): void;
+    export function lambda<T>(f: (...args: any) => T): typeof f;
+    export const fn: typeof lambda;
 }
