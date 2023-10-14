@@ -350,8 +350,6 @@ divide-matrix = (A, B) --> multiply-matrix A, invert-matrix b
 
 elementary-charge = 1.602176634`E`-19
 
-quark-charge = elementary-charge / 3
-
 coulomb = 1 / (1.602176634`E`-19)
 
 micro-coulumb = (1`E`-6) * coulomb
