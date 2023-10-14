@@ -117,6 +117,15 @@
     multiplyMatrix: lib.multiplyMatrix,
     divideMatrix: lib.divideMatrix,
     comb: lib.comb,
-    summation: lib.summation
+    summation: lib.summation,
+    microCoulomb: lib.microCoulomb,
+    coulomb: lib.coulomb,
+    chargePerElectron: lib.chargePerElectron,
+    chargePerProton: lib.chargePerProton,
+    C: lib.C,
+    mem: lib.mem,
+    put: lib.put,
+    explode: lib.explode,
+    implode: lib.implode
   };
 }).call(this);

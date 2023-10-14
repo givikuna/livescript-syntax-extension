@@ -47,6 +47,8 @@ enumerate = (.entries!)
 
 member = (k, xs) --> xs.includes k
 
+mem = member
+
 string-append = (s1, s2) --> s1 + s2
 
 map2 = (f, xs, ys) --> xs.map (x, i) -> f x, ys[i]
@@ -346,7 +348,32 @@ multiply-matrix = (A, B) -->
 
 divide-matrix = (A, B) --> multiply-matrix A, invert-matrix b
 
+charge-per-electron = 1.602176634`E`-19
+
+charge-per-proton = 1.602176634`E`-19
+
+coulomb = 1 / (1.602176634`E`-19)
+
+micro-coulumb = (1`E`-6) * coulomb
+
+C = 299792458mps
+
+explode = (.split '')
+
+implode = (.join '')
+
+put = (x, xs) --> [...xs, x]
+
 module.exports = {
+    implode
+    mem
+    put
+    explode
+    C
+    charge-per-electron
+    charge-per-proton
+    coulomb
+    micro-coulumb
     add-matrix
     minus-matrix
     invert-matrix

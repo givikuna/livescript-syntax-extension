@@ -87,4 +87,13 @@ declare module "lsse" {
     export function minusMatrix(A: number[][], B: number[][]): number[][];
     export function multiplyMatrix(A: number[][], B: number[][]): number[][];
     export function divideMatrix(A: number[][], B: number[][]): number[][];
+    export const chargePerElectron: number;
+    export const chargePerProton: number;
+    export const coulomb: number;
+    export const microCoulomb: number;
+    export const C: number;
+    export function mem<T>(k: T, xs: Array<T>): boolean;
+    export function explode(s: string): string[];
+    export function put<T>(x: T, xs: Array<T>): T[];
+    export function implode(xs: string[]): string;
 }

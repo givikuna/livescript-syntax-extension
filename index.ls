@@ -106,4 +106,13 @@ module.exports = {
     lib.divide-matrix
     lib.comb
     lib.summation
+    lib.micro-coulomb
+    lib.coulomb
+    lib.charge-per-electron
+    lib.charge-per-proton
+    lib.C
+    lib.mem
+    lib.put
+    lib.explode
+    lib.implode
 }
