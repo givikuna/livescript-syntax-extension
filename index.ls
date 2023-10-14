@@ -108,8 +108,8 @@ module.exports = {
     lib.summation
     lib.micro-coulomb
     lib.coulomb
-    lib.charge-per-electron
-    lib.charge-per-proton
+    lib.elementary-charge
+    lib.quark-charge
     lib.C
     lib.mem
     lib.put

@@ -348,15 +348,15 @@ multiply-matrix = (A, B) -->
 
 divide-matrix = (A, B) --> multiply-matrix A, invert-matrix b
 
-charge-per-electron = 1.602176634`E`-19
+elementary-charge = 1.602176634`E`-19
 
-charge-per-proton = 1.602176634`E`-19
+quark-charge = elementary-charge / 3
 
 coulomb = 1 / (1.602176634`E`-19)
 
 micro-coulumb = (1`E`-6) * coulomb
 
-C = 299792458mps
+C = 299792458mps # speed of light
 
 explode = (.split '')
 
@@ -370,8 +370,8 @@ module.exports = {
     put
     explode
     C
-    charge-per-electron
-    charge-per-proton
+    quark-charge
+    elementary-charge
     coulomb
     micro-coulumb
     add-matrix
