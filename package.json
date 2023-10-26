@@ -39,6 +39,7 @@
     "url": "git+https://github.com/givikuna/livescript-syntax-extension.git"
   },
   "devDependencies": {
+    "@types/node": "^20.8.6",
     "mocha": "^10.2.0"
   }
 }

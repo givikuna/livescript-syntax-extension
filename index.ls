@@ -109,10 +109,45 @@ module.exports = {
     lib.micro-coulomb
     lib.coulomb
     lib.elementary-charge
-    lib.quark-charge
     lib.C
     lib.mem
     lib.put
     lib.explode
     lib.implode
+    lib.K
+    lib.clz32
+    lib.log10e
+    lib.log2e
+    lib.ln2
+    lib.ln10
+    lib.trunc
+    lib.delete-after
+    lib.delete-after-index
+    lib.Plancks-constant
+    lib.mole
+    lib.Boltzmann-constant
+    lib.Faraday-constant
+    lib.neuron-mass
+    lib.Rydberg-constant
+    lib.Stefan-Boltzmann-constant
+    lib.fine-structure-constant
+    lib.F
+    lib.quadratic-formula
+    lib.gravitational-force
+    lib.electrostatic-force
+    lib.centripetal-force
+    lib.electron-mass
+    lib.proton-mass
+    lib.dsin
+    lib.dcos
+    lib.dtan
+    lib.dcsc
+    lib.dsec
+    lib.dcot
+    lib.darcsin
+    lib.darccos
+    lib.darctan
+    lib.darccsc
+    lib.darcsec
+    lib.darccot
 }

@@ -1,5 +1,5 @@
 require! {
-    'prelude-ls':{tail,fold,foldr,flip,foldl,filter,map}
+    'prelude-ls':{tail,fold,foldr,flip,foldl,filter,map,sqrt}
     'child_process':{exec-sync}
 }
 
@@ -43,7 +43,7 @@ freq = (k, xs) --> xs.filter (is k) .length
 
 len = (.length)
 
-enumerate = (.entries!)
+enumerate = (.entries!) >> Array.from
 
 member = (k, xs) --> xs.includes k
 
@@ -73,17 +73,17 @@ memoize = (f) ->
 
 sorted = (xs) -->
     if xs.length <= 1 then return xs
-    mid = arr.length
+    mid = xs.length
         |> (/ 2)
         |> Math.floor
-    l = sorted arr.slice 0 mid
-    r = sorted arr.slice mid
+    l = sorted xs.slice 0 mid
+    r = sorted xs.slice mid
     ((l2, r2) ->
         a = []
         while l2.length and r2.length
-            if l2[0] < r2[0] then a.push l.shift!
-            else a.push r.shift!
-        [...a, ...l, ...r]) l, r
+            if l2[0] < r2[0] then a.push l2.shift!
+            else a.push r2.shift!
+        [...a, ...l2, ...r2]) l, r
 
 noop = -> null; return
 
@@ -182,7 +182,33 @@ arcsec = (1 /) >> Math.acos
 
 arctan = (1 /) >> Math.atan
 
-expm1 = Math.expm1
+to-rad = (* Math.PI) >> (/ 180.0deg)
+
+to-deg = (* 180.0deg) >> (/ Math.PI)
+
+dsin = to-deg >> Math.sin
+
+dcos = to-deg >> Math.cos
+
+dtan = to-deg >> Math.tan
+
+dcsc = to-deg >> (1 /) >> Math.sin
+
+dsec = to-deg >> (1 /) >> Math.cos
+
+dcot = to-deg >> (1 /) >> Math.tan
+
+darcsin = Math.asin >> to-deg
+
+darccos = Math.acos >> to-deg
+
+darctan = Math.atan >> to-deg
+
+darccsc = (1 /) >> Math.asin >> to-deg
+
+darcsec = (1 /) >> Math.acos >> to-deg
+
+darccot = (1 /) >> Math.atan >> to-deg
 
 replace = (x1, x2, xs) --> xs.replace x1, x2
 
@@ -225,7 +251,7 @@ chunk = (arr, size) -->
     i = 0
     while i < arr.length
         chunk_ = arr.slice i, (i + size)
-        chunked-arr.push chunk
+        chunked-arr.push chunk_
         i += 1
     chunked-arr
 
@@ -298,13 +324,13 @@ fn = lambda
 
 exec = exec-sync
 
-to-deg = parseFloat >> (* 180.0) >> (/ Math.pi)
+to-deg = parseFloat >> (* 180.0) >> (/ Math.PI)
 
-to-rad = parseFloat >> (* Math.pi) >> (/ 180.0)
+to-rad = parseFloat >> (* Math.PI) >> (/ 180.0)
 
 E = (n, ex) --> n * Math.pow(10, ex) # scientific notation
 
-G = 6.67408`E`-11
+G = 6.67384`E`-11
 
 g = 9.807mpss
 
@@ -350,7 +376,7 @@ divide-matrix = (A, B) --> multiply-matrix A, invert-matrix b
 
 elementary-charge = 1.602176634`E`-19
 
-coulomb = 1 / (1.602176634`E`-19)
+coulomb = 1 / elementary-charge
 
 micro-coulumb = (1`E`-6) * coulomb
 
@@ -362,13 +388,96 @@ implode = (.join '')
 
 put = (x, xs) --> [...xs, x]
 
+K = 9`E`9
+
+proton-mass = 1.672621898`E`-27
+
+electron-mass = 9.10938356`E`-31
+
+electrostatic-force = (Q1, Q2, r) --> (K * Q1 * Q2) / (r^2)
+
+gravitational-force = (m1, m2, r) --> (G * m1 * m2) / (r^2)
+
+F = (m, a) --> m * a
+
+centripetal-force = (m, v, r) --> (m * (v^2)) / r
+
+frictional-force = (coef, FN) --> coef * FN
+
+spring-force = (k, x) --> -k * x
+
+quadratic-formula = (a, b, c) -->
+    fun = ((f) -> (-b `f` sqrt((b^2) - (4 * a * c))) / (2 * a))
+    return [
+        fun (+)
+        fun (-)
+    ]
+
+Plancks-constant = 6.626070040`E`-34
+
+Boltzmann-constant = 1.38064852`E`-23
+
+Faraday-constant = 9.648533289`E`4
+
+neuron-mass = 1.674927471`E`-27
+
+Rydberg-constant = 1.0973731568508`E`7
+
+Stefan-Boltzmann-constant = 5.670367`E`-8
+
+fine-structure-constant = 7.297352566`E`-3
+
+mole = 6.02214076`E`23
+
+delete-after-index = (n, xs) --> xs.slice 0 n
+
+delete-after = (x, xs) --> if xs.findIndex((is x)) then xs.slice 0 xs.findIndex (is x) else xs
+
+trunc = (.to-string!) >> (.split '') >> (delete-after '.') >> (.join '') >> (parseInt)
+
+ln10 = Math.LN10
+
+ln2 = Math.LN2
+
+log10e = Math.LOG10E
+
+log2e = Math.LOG2E
+
+clz32 = Math.clz32
+
+expm1 = (Math.E^) >> (- 1)
+
 module.exports = {
+    expm1
+    clz32
+    log10e
+    log2e
+    ln2
+    ln10
+    trunc
+    delete-after
+    delete-after-index
+    Plancks-constant
+    mole
+    Boltzmann-constant
+    Faraday-constant
+    neuron-mass
+    Rydberg-constant
+    Stefan-Boltzmann-constant
+    fine-structure-constant
+    F
+    quadratic-formula
+    gravitational-force
+    electrostatic-force
+    centripetal-force
+    electron-mass
+    proton-mass
+    K
     implode
     mem
     put
     explode
     C
-    quark-charge
     elementary-charge
     coulomb
     micro-coulumb
@@ -438,7 +547,6 @@ module.exports = {
     arcsin
     arccos
     arctan
-    expm1
     replace
     trim-start
     trim-end
@@ -459,4 +567,18 @@ module.exports = {
     defparameter
     defvar
     defmacro
+    to-rad
+    to-deg
+    dsin
+    dcos
+    dtan
+    dcsc
+    dsec
+    dcot
+    darcsin
+    darccos
+    darctan
+    darccsc
+    darcsec
+    darccot
 }
