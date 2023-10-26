@@ -1,5 +1,5 @@
 require! {
-  'prelude-ls':{filter,tail}
+  'prelude-ls':{filter,tail,head}
 }
 
 mathjs = require \mathjs
@@ -89,6 +89,8 @@ export is-perfect = (n) --> n is fold0 (+), divisors n
 export is-natural-number = (n) --> n > 0 and Number.is-integer n
 
 export is-int = Number.is-integer
+
+export len = (.length)
 
 export summation = (n, i, f) --> fold0 (+), [f x for x in [i to n]]
 
@@ -230,4 +232,10 @@ export Ke_approx = 9`E`9
 
 export Ke = recip (4 * π * εo)
 
-
+export sieve = (n) -->
+    worksheet = [2 to n]
+    primes = []
+    while worksheet[0] > sqrt n
+        primes.push worksheet[0]
+        worksheet = filter worksheet, ((% primes[dec len primes]) >> (is 0))
+    return primes ++ worksheet
