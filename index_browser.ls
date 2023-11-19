@@ -2,8 +2,6 @@ require! {
     'prelude-ls':{tail,fold,foldr,flip,foldl,filter,map}
 }
 
-mathjs = require \mathjs
-
 export mapcar = (f, xs) --> [f x for x in xs]
 
 export str = (s) -->
@@ -239,9 +237,7 @@ export foldt = (f, xs) --> fold true '' xs
 
 export foldf = (f, xs) --> fold false '' xs
 
-export factorial = (n) -->
-    if n < 0 or n.to-string!split '' .includes '.' then return mathjs.gamma n
-    if n is 0 or n is 1 then return 1 else return n * factorial dec n
+export factorial = (n) --> if n is 0 or n is 1 then 1 else (* n) factorial dec n
 
 export comb = (n, k) --> (factorial n) / ((factorial n - k) * factorial k)
 
@@ -337,8 +333,6 @@ export summation = (n, i, f) --> fold0 (+), [f x for x in [i to n]]
 
 export Σ = summation
 
-export invert-matrix = mathjs.inv
-
 export add-matrix = (xs, ys) --> xs.map (a, i) -> a.map (x, j) -> x + ys[i][j]
 
 export subtract-matrix = (xs, ys) --> xs.map (a, i) -> a.map (x, j) -> x - ys[i][j]
@@ -350,8 +344,6 @@ export multiply-matrix = (A, B) -->
         for j in [0 til len B[0]]
             C[i][j] = fold0 (+), A[i].map ((a, k) -> a * B[k][j])
     C
-
-export divide-matrix = (A, B) --> multiply-matrix A, invert-matrix b
 
 export elementary-charge = 1.602176634`E`-19
 
