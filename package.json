@@ -10,16 +10,16 @@
   "scripts": {
     "test": "mocha",
     "publish-to-npm": "npm run compile && npm publish --access=public",
-    "compile": "lsc -c index && lsc -c index.browser"
+    "compile": "lsc -c index && lsc -c index_browser"
   },
   "name": "lsse",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "author": {
     "name": "Givi Tsvariani",
     "email": "givitsvariani@proton.me"
   },
   "main": "index.js",
-  "browser": "./index.browser.js",
+  "browser": "./index_browser.js",
   "types": "types.d.ts",
   "keywords": [
     "livescript",

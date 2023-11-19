@@ -1,5 +1,5 @@
 require! {
-    'prelude-ls':{fold,foldr,flip,foldl,filter,map}
+    'prelude-ls':{tail,fold,foldr,flip,foldl,filter,map}
 }
 
 mathjs = require \mathjs
