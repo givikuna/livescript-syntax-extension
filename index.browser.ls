@@ -1,6 +1,5 @@
 require! {
-    'prelude-ls':{tail,fold,foldr,flip,foldl,filter,map}
-    'child_process':{exec-sync}
+    'prelude-ls':{fold,foldr,flip,foldl,filter,map}
 }
 
 mathjs = require \mathjs
@@ -172,8 +171,6 @@ export trim-start = (.trim-start!)
 
 export trim-end = (.trim-end!)
 
-export input = require \readline-sync .question
-
 export charcode = (.char-code-at 0)
 
 export make-hash = (xs) -->
@@ -227,8 +224,6 @@ export lambda = (f) -> (...args) -> f ...args
 export fn = lambda
 
 export λ = lambda
-
-export exec = exec-sync
 
 export expm1 = Math.expm1
 

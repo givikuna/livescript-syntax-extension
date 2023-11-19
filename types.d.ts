@@ -22,7 +22,7 @@ declare module "lsse" {
     export function uniq(xs: Array<any>): Array<any>;
     export function memoize(f: Function): typeof f;
     export function sorted<T>(xs: Array<T>): Array<T>;
-    export function noop(): void;
+    export function noop(d: any): void;
     export function id<T>(it: T): T;
     export function before(beforeFunc: Function, func: Function): Function;
     export function after(func: Function, afterFunc: Function): Function;
@@ -42,12 +42,6 @@ declare module "lsse" {
     export const say: typeof console.log;
     export function indexOf<T>(x: T, xs: T[]): number;
     export function isNumeric(xs: string): boolean;
-    export function csc(n: number): number;
-    export function sec(n: number): number;
-    export function cot(n: number): number;
-    export function arcsin(n: number): number;
-    export function arccos(n: number): number;
-    export function arctan(n: number): number;
     export const exmp1: typeof Math.expm1;
     export function replace(x1: string, x2: string, xs: string): string;
     export function trimStart(s: string): string;
@@ -65,26 +59,83 @@ declare module "lsse" {
     export function lambda<T>(f: (...args: any) => T): typeof f;
     export const fn: typeof lambda;
     export function exec(cmd: string): string;
-    export function toDeg(rad: number): number;
-    export function toRad(deg: number): number;
-    export function E(n: number, ex: number): number;
-    export const G: number;
-    export const g: 9.807;
-    export function factorial(n: number): number;
-    export function palindrome(s: string): boolean;
-    export function divisors(n: number): number[];
-    export function perfect(n: number): boolean;
-    export function naturalNumber(n: number): boolean;
-    export function isInt(n: number): boolean;
-    export function changeIn(f: number, o: number): number;
     export function foldstr(f: (x: string, y: string) => string, xs: Array<string>): string;
     export function foldt(f: (x: boolean, y: boolean) => boolean, xs: Array<boolean>): boolean;
     export function foldf(f: (x: boolean, y: boolean) => boolean, xs: Array<boolean>): boolean;
-    export function summation(n: number, i: number, f: (x: number) => number): number;
+    export function exec(cmd: string): string;
+    export const λ: typeof fn;
+    export function palindrome(s: string): boolean;
+    export function changeIn(f: number, i: number): number;
+    export const Δ: typeof changeIn;
+    export function factorial(n: number): number;
     export function comb(n: number, k: number): number;
+    export const nCr: typeof comb;
+    export function sin(n: number): number;
+    export function cos(n: number): number;
+    export function tan(n: number): number;
+    export function arccsc(n: number): number;
+    export function arcsec(n: number): number;
+    export function arctan(n: number): number;
+    export function toRad(n: number): number;
+    export function toDeg(n: number): number;
+    export function abs(n: number): number;
+    export function sign(n: number): number;
+    export function floor(n: number): number;
+    export function ceil(n: number): number;
+    export function sqrt(n: number): number;
+    export function cbrt(n: number): number;
+    export function gcd(n: number, m: number): number;
+    export function lcm(n: number, m: number): number;
+    export function dsin(n: number): number;
+    export function dcos(n: number): number;
+    export function dtan(n: number): number;
+    export function dcsc(n: number): number;
+    export function dsec(n: number): number;
+    export function dcot(n: number): number;
+    export function darcsin(n: number): number;
+    export function darccos(n: number): number;
+    export function darctan(n: number): number;
+    export function darccsc(n: number): number;
+    export function darcsec(n: number): number;
+    export function darccot(n: number): number;
+    export const ln: typeof Math.log;
+    export const log10: typeof Math.log10;
+    export const log1p: typeof Math.log1p;
+    export const log2: typeof Math.log2;
+    export function log(base: number, n: number): number;
+    export function even(n: number): boolean;
+    export function odd(n: number): boolean;
+    export function E(n: number, ex: number): number;
+    export const G: 6.67384e-11;
+    export const earthMass: 5.97219e24;
+    export const earthRadius: 6378100;
+    export function recip(n: number): number;
+    export const ge: 9.797759126737114;
+    export function isNaturalNumber(n: number): boolean;
+    export function isInt(n: number): boolean;
+    export function summation(n: number, i: number, f: (m: number) => number): number;
+    export const Σ: typeof summation;
     export function invertMatrix(A: number[][]): number[][];
     export function addMatrix(A: number[][], B: number[][]): number[][];
-    export function minusMatrix(A: number[][], B: number[][]): number[][];
+    export function subtractMatrix(A: number[][], B: number[][]): number[][];
     export function multiplyMatrix(A: number[][], B: number[][]): number[][];
     export function divideMatrix(A: number[][], B: number[][]): number[][];
+    export const gn: 9.807;
+    export const g: 9.807;
+    export const elementaryCharge: 1.602176634e-19;
+    export const e: typeof Math.E;
+    export const C: 299792458;
+    export const π: typeof Math.PI;
+    export const pi: typeof Math.PI;
+    export const tau: 6.283185307179586;
+    export const τ: 6.283185307179586;
+    export const magneticConstant: 0.0000012566370614359173
+    export const μ0: 0.0000012566370614359173
+    export const vacuumPermittivity: 8.854187817620389e-12
+    export const ε0: 8.854187817620389e-12
+    export const Ke: 8987551787.368177
+    export const mα: 6.69048768e-27
+    export const alphaParticleMass: 6.69048768e-27
+    export const Qα: 3.2043532680000003e-19
+    export const alphaParticleCharge: 3.2043532680000003e-19
 }

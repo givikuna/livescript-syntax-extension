@@ -3,7 +3,6 @@
     "child_process": "^1.0.2",
     "fs": "^0.0.1-security",
     "livescript": "^1.6.0",
-    "lodash": "^4.17.21",
     "mathjs": "^11.11.2",
     "prelude-ls": "^1.2.1",
     "readline-sync": "^1.4.10"
@@ -11,15 +10,16 @@
   "scripts": {
     "test": "mocha",
     "publish-to-npm": "npm run compile && npm publish --access=public",
-    "compile": "lsc -c index && lsc -c lib"
+    "compile": "lsc -c index && lsc -c index.browser"
   },
   "name": "lsse",
-  "version": "1.0.12",
+  "version": "1.0.14",
   "author": {
     "name": "Givi Tsvariani",
     "email": "givitsvariani@proton.me"
   },
   "main": "index.js",
+  "browser": "./index.browser.js",
   "types": "types.d.ts",
   "keywords": [
     "livescript",
