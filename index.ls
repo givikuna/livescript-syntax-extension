@@ -4,7 +4,7 @@ require! {
 
 mathjs = require \mathjs
 
-export Vec = require \Vec .Vec
+export Vec = require('./Vec').Vec
 
 export flip = (f, x, y) --> f y, x
 

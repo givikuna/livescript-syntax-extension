@@ -13,7 +13,7 @@
     "compile": "lsc -c index && lsc -c index_browser"
   },
   "name": "lsse",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "author": {
     "name": "Givi Tsvariani",
     "email": "givitsvariani@proton.me"
