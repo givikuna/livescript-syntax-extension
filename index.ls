@@ -1,9 +1,38 @@
 require! {
-    'prelude-ls':{tail,fold,foldr,flip,foldl,filter,map}
     'child_process':{exec-sync}
 }
 
 mathjs = require \mathjs
+
+export Vec = require \Vec .Vec
+
+export flip = (f, x, y) --> f y, x
+
+export rev = (Array.from) >> (.reverse!)
+
+export fold = (f, z, xs) -->
+    memo = z
+    for x in xs
+        memo = f memo, x
+    memo
+
+export foldl = fold
+
+export foldr = (f, z, xs) --> foldl f, z, rev xs
+
+export fold1 = (f, xs) --> fold f, 1 xs
+
+export foldl1 = fold1
+
+export foldr1 = (f, xs) --> foldr1 f, rev xs
+
+export filter = (f, xs) --> [x for x in xs when f x]
+
+export reject = (f, xs) --> (flip filter) xs, ((f) >> (not))
+
+export partition = (f, xs) --> [(filter f, xs), (reject f, xs)]
+
+export map = (f, xs) --> [f x for x in xs]
 
 export mapcar = (f, xs) --> [f x for x in xs]
 
@@ -45,7 +74,7 @@ export len = (.length)
 
 export enumerate = (.entries!)
 
-export member = (k, xs) --> xs.includes k
+export member = (k, xs) --> k in xs
 
 export mem = member
 
@@ -238,8 +267,6 @@ export foldstr = (f, xs) --> fold f, '', xs
 
 export change-in = (f, i) --> if typeof f is \number then f - i else f[0] - f[1]
 
-export Δ = change-in
-
 export foldt = (f, xs) --> fold true '' xs
 
 export foldf = (f, xs) --> fold false '' xs
@@ -248,7 +275,9 @@ export factorial = (n) -->
     if n < 0 or n.to-string!split '' .includes '.' then return mathjs.gamma n
     if n is 0 or n is 1 then return 1 else return n * factorial dec n
 
-export comb = (n, k) --> (factorial n) / ((factorial n - k) * factorial k)
+export ǃ = factorial
+
+export comb = (n, k) --> (ǃ n) / ((ǃ (n - k)) * ǃ k)
 
 export nCr = comb
 
@@ -320,6 +349,8 @@ export even = (% 2) >> (is 0)
 
 export odd = (% 2) >> (isnt 0)
 
+export signum = --> if (>) 0 x then -1 else if (<) 0 x then 1 else 0
+
 export E = (n, ex) --> n * Math.pow 10 ex
 
 export G = 6.67384`E`-11
@@ -340,7 +371,7 @@ export is-int = Number.is-integer
 
 export summation = (n, i, f) --> fold0 (+), [f x for x in [i to n]]
 
-export Σ = summation
+export Σ = --> foldl0 (+), it
 
 export invert-matrix = mathjs.inv
 
@@ -415,7 +446,62 @@ export gcd = (n, m) -->
         n = tmp
     Math.abs n
 
+export gcf = gcd
+
 export lcm = (n, m) --> (n * m) / gcd n, m
+
+export append = (++)
+
+export list-append = append
+
+export string-append = (+)
+
+export ƒ = lambda
+
+export ǀ = len
+
+export ǁ = Math.abs
+
+export Δ = (xs, ys) --> uniq (++) [x for x in xs when x not in ys] [y for y in ys when y not in xs]
+
+export difference = Δ
+
+export ϵ = (x, xs) --> x in xs
+
+export ᐡ = (++) >> uniq
+
+export union = ᐡ
+
+export ᐢ = (xs, ys) --> uniq (++) [x for x in xs when x in ys] [y for y in ys when y in xs]
+
+export intersection = ᐢ
+
+export ᑦ = (xs, ys) -->
+    xsu = uniq xs
+    ysu = uniq ys
+    ϵ on [(x `ϵ` ysu) for x in xsu]
+
+export proper-subset = ᑦ
+
+export ᐣ = flip ᑦ
+
+export proper-superset = ᐣ
+
+export negate = --> if (<) 0 it then -it else it
+
+export neg = negate
+
+export ᐨ = neg
+
+export ᕀ =--> if (>) 0 it then -it else it
+
+export Ɩ = Math.floor
+
+export to_set = (new Set)
+
+export Ø = len >> (< 1)
+
+export p = console.log
 
 make-legal-JS-name = (s) -->
     name = s.replace /\r?\n|\r/g, '' .trim!

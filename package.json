@@ -13,13 +13,13 @@
     "compile": "lsc -c index && lsc -c index_browser"
   },
   "name": "lsse",
-  "version": "1.0.17",
+  "version": "1.0.19",
   "author": {
     "name": "Givi Tsvariani",
     "email": "givitsvariani@proton.me"
   },
   "main": "index.js",
-  "browser": "./index_browser.js",
+  "browser": "index_browser.js",
   "types": "types.d.ts",
   "keywords": [
     "livescript",

@@ -1,6 +1,32 @@
-require! {
-    'prelude-ls':{tail,fold,foldr,flip,foldl,filter,map}
-}
+export Vec = require \Vec .Vec
+
+export flip = (f, x, y) --> f y, x
+
+export rev = (Array.from) >> (.reverse!)
+
+export fold = (f, z, xs) -->
+    memo = z
+    for x in xs
+        memo = f memo, x
+    memo
+
+export foldl = fold
+
+export foldr = (f, z, xs) --> foldl f, z, rev xs
+
+export fold1 = (f, xs) --> fold f, 1 xs
+
+export foldl1 = fold1
+
+export foldr1 = (f, xs) --> foldr1 f, rev xs
+
+export filter = (f, xs) --> [x for x in xs when f x]
+
+export reject = (f, xs) --> (flip filter) xs, ((f) >> (not))
+
+export partition = (f, xs) --> [(filter f, xs), (reject f, xs)]
+
+export map = (f, xs) --> [f x for x in xs]
 
 export mapcar = (f, xs) --> [f x for x in xs]
 
@@ -42,7 +68,7 @@ export len = (.length)
 
 export enumerate = (.entries!)
 
-export member = (k, xs) --> xs.includes k
+export member = (k, xs) --> k in xs
 
 export mem = member
 
@@ -169,6 +195,8 @@ export trim-start = (.trim-start!)
 
 export trim-end = (.trim-end!)
 
+export input = require \readline-sync .question
+
 export charcode = (.char-code-at 0)
 
 export make-hash = (xs) -->
@@ -231,15 +259,15 @@ export foldstr = (f, xs) --> fold f, '', xs
 
 export change-in = (f, i) --> if typeof f is \number then f - i else f[0] - f[1]
 
-export Δ = change-in
-
 export foldt = (f, xs) --> fold true '' xs
 
 export foldf = (f, xs) --> fold false '' xs
 
-export factorial = (n) --> if n is 0 or n is 1 then 1 else (* n) factorial dec n
+export factorial = --> if it in [0 1] then it else (* it) factorial dec it
 
-export comb = (n, k) --> (factorial n) / ((factorial n - k) * factorial k)
+export ǃ = factorial
+
+export comb = (n, k) --> (ǃ n) / ((ǃ (n - k)) * ǃ k)
 
 export nCr = comb
 
@@ -311,6 +339,8 @@ export even = (% 2) >> (is 0)
 
 export odd = (% 2) >> (isnt 0)
 
+export signum = --> if (>) 0 x then -1 else if (<) 0 x then 1 else 0
+
 export E = (n, ex) --> n * Math.pow 10 ex
 
 export G = 6.67384`E`-11
@@ -331,7 +361,7 @@ export is-int = Number.is-integer
 
 export summation = (n, i, f) --> fold0 (+), [f x for x in [i to n]]
 
-export Σ = summation
+export Σ = --> foldl0 (+), it
 
 export add-matrix = (xs, ys) --> xs.map (a, i) -> a.map (x, j) -> x + ys[i][j]
 
@@ -344,6 +374,8 @@ export multiply-matrix = (A, B) -->
         for j in [0 til len B[0]]
             C[i][j] = fold0 (+), A[i].map ((a, k) -> a * B[k][j])
     C
+
+export divide-matrix = (A, B) --> multiply-matrix A, invert-matrix b
 
 export elementary-charge = 1.602176634`E`-19
 
@@ -402,56 +434,59 @@ export gcd = (n, m) -->
         n = tmp
     Math.abs n
 
+export gcf = gcd
+
 export lcm = (n, m) --> (n * m) / gcd n, m
 
-make-legal-JS-name = (s) -->
-    name = s.replace /\r?\n|\r/g, '' .trim!
-    if /^[a-zA-Z0-9]+$/.test name then return name
-    if name[0] is name[0].to-upper-case! then return lodash.camel-case(name)replace /\b\w/g (c) -> c.to-upper-case!
-    lodash.camel-case name
+export append = (++)
 
-export function defun name, func
-    if global.has-own-property name then return null
-    if not func
-        global[make-legal-JS-name name] = null
-        return global[make-legal-JS-name name]
-    global[make-legal-JS-name name] = func
-    func
+export list-append = append
 
-export function define name, val
-    if global.has-own-property name then do
-        return global['name']
-    if not val then do
-        global[make-legal-JS-name name] = null
-        return global[make-legal-JS-name name]
-    global[make-legal-JS-name name] = val
-    val
+export string-append = (+)
 
-export function defconstant name, val
-    if global.has-own-property name then do
-        return global['name']
-    if not val then do
-        global[make-legal-JS-name name] = null
-        return global[make-legal-JS-name name]
-    Object.define-property do
-        global
-        make-legal-JS-name name
-        {
-            value: val
-            writable: false
-            configurable: false
-        }
-    val
+export ƒ = lambda
 
-export function defparameter name, val
-    if global.has-own-property name then do
-        return null
-    defun name, val
+export ǀ = len
 
-export function defvar name
-    if not global.has-own-property name then do
-        global[name] = undefined
-    return
+export ǁ = Math.abs
 
-export function defmacro name, func
-    defun name, func
+export Δ = (xs, ys) --> uniq (++) [x for x in xs when x not in ys] [y for y in ys when y not in xs]
+
+export difference = Δ
+
+export ϵ = (x, xs) --> x in xs
+
+export ᐡ = (++) >> uniq
+
+export union = ᐡ
+
+export ᐢ = (xs, ys) --> uniq (++) [x for x in xs when x in ys] [y for y in ys when y in xs]
+
+export intersection = ᐢ
+
+export ᑦ = (xs, ys) -->
+    xsu = uniq xs
+    ysu = uniq ys
+    ϵ on [(x `ϵ` ysu) for x in xsu]
+
+export proper-subset = ᑦ
+
+export ᐣ = flip ᑦ
+
+export proper-superset = ᐣ
+
+export negate = --> if (<) 0 it then -it else it
+
+export neg = negate
+
+export ᐨ = neg
+
+export ᕀ =--> if (>) 0 it then -it else it
+
+export Ɩ = Math.floor
+
+export to_set = (new Set)
+
+export Ø = len >> (< 1)
+
+export p = console.log
