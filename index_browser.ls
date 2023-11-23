@@ -195,8 +195,6 @@ export trim-start = (.trim-start!)
 
 export trim-end = (.trim-end!)
 
-export input = require \readline-sync .question
-
 export charcode = (.char-code-at 0)
 
 export make-hash = (xs) -->
